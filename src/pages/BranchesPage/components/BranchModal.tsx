@@ -152,7 +152,8 @@ const BranchModal: React.FC<BranchModalProps> = ({
   };
 
   return (
-    <div className="p-6">
+    <div>
+      <h1 className="text-2xl font-bold mb-6 text-center">Branches</h1>
       <Button
         type="primary"
         icon={<PlusCircleOutlined />}

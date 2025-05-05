@@ -96,7 +96,6 @@ const BranchesData: React.FC<BranchesDataProps> = ({
 
   return (
     <div className="min-h-screen">
-      <h1 className="text-2xl font-bold mb-6 text-center">Branches</h1>
       <Table
         columns={columns}
         dataSource={data}
