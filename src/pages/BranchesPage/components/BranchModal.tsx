@@ -12,6 +12,7 @@ import {
   PlusCircleOutlined,
   MinusCircleOutlined,
   UploadOutlined,
+  EditOutlined,
 } from '@ant-design/icons';
 import { useEffect } from 'react';
 import api from '../../../api';
@@ -111,7 +112,7 @@ const BranchModal: React.FC<BranchModalProps> = ({
       if (selectedBranch?.id) {
         formData.append('id', selectedBranch.id.toString());
         const res = await api.put('/branch/edit', formData);
-        
+
         if (res.data.status === 200) {
           message.success('Branch updated successfully!');
         }
@@ -162,8 +163,12 @@ const BranchModal: React.FC<BranchModalProps> = ({
       <Modal
         title={
           <div className="flex items-center">
-            <PlusCircleOutlined className="text-blue-500 mr-2" />
-            Add New Branch
+            {selectedBranch?.id ? (
+              <EditOutlined className="text-blue-500 mr-2"/>
+            ) : (
+              <PlusCircleOutlined className="text-blue-500 mr-2" />
+            )}
+            {selectedBranch?.id ? 'Edit Branch' : 'Add New Branch'}
           </div>
         }
         open={isModalOpen}

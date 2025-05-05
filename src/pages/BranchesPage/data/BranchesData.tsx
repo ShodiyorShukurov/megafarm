@@ -40,7 +40,10 @@ const BranchesData: React.FC<BranchesDataProps> = ({
       title: 'Phone Number',
       dataIndex: 'phone_number',
       key: 'phone_number',
-      render: (phones: string[]) => phones.join(', '),
+      render: (phones: string[]) => phones.map((phone) => (
+        <a href={'tel:' + phone} key={phone}>
+          {phone} <br />
+        </a>)),
       align: 'center',
     },
     {
