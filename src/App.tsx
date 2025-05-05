@@ -9,16 +9,14 @@ import Branches from './pages/BranchesPage/Branches';
 const App = () => {
   return (
     <Routes>
-      {/* Define your routes here */}
-      {/* Example: <Route path="/" element={<Home />} /> */}
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<Navigate to="/login" />} />
-      {/* <Route element={<PrivateRoute />}> */}
+      <Route element={<PrivateRoute />}>
       <Route path="/users" element={<Users />} />
       <Route path="/receipts" element={<Receipts />} />
       <Route path="/bonuses" element={<Bonuses />} />
       <Route path="/branches" element={<Branches />} />
-      {/* </Route> */}
+      </Route>
     </Routes>
   );
 };
