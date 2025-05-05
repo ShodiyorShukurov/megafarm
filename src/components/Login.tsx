@@ -1,4 +1,4 @@
-import { Form, Input, Button, Card, Typography } from 'antd';
+import { Form, Input, Button, Card, Typography, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import api from '../api/index';
@@ -17,16 +17,19 @@ const Login: React.FC = () => {
     setLoading(true);
     try {
       const res = await api.post('/admin/login', values);
-      if (res.status === 200) {
+      if (res.data.status === 200) {
         console.log('Login successful:', res.data);
         const { token } = res.data;
         localStorage.setItem('token', token);
         window.location.href = '/users'; 
+        setLoading(false);
       } else {
-        console.error('Login failed:', res.data.message);
+        message.error("Login failed. Please check your credentials.");
+        setLoading(false);
       }
     } catch (error) {
       console.error('Login error:', error);
+      setLoading(false);
     }
   };
 
@@ -45,6 +48,7 @@ const Login: React.FC = () => {
               prefix={<UserOutlined />}
               placeholder="Username"
               size="large"
+                autoComplete='current-username'
             />
           </Form.Item>
           <Form.Item
@@ -55,6 +59,7 @@ const Login: React.FC = () => {
               prefix={<LockOutlined />}
               placeholder="Password"
               size="large"
+              autoComplete='current-password'
             />
           </Form.Item>
           <Form.Item>
