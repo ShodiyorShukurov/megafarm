@@ -79,9 +79,9 @@ const BranchModal: React.FC<BranchModalProps> = ({
   const handleFinish = async (values: BranchFormValues) => {
     try {
       const formData = new FormData();
-      formData.append('name_uz', values.name_uz);
+      formData.append('name_uz', values.name_uz.trim());
       formData.append('branch_id', values.branch_id.toString());
-      formData.append('name_ru', values.name_ru);
+      formData.append('name_ru', values.name_ru.trim());
       if (Array.isArray(values.phone_number)) {
         if (values.phone_number.length === 1) {
           formData.append(
@@ -94,12 +94,12 @@ const BranchModal: React.FC<BranchModalProps> = ({
           });
         }
       }
-      formData.append('schedule', values.schedule);
-      formData.append('address_uz', values.address_uz);
-      formData.append('address_ru', values.address_ru);
-      formData.append('landmark_uz', values.landmark_uz || '');
-      formData.append('landmark_ru', values.landmark_ru || '');
-      formData.append('address_link', values.address_link || '');
+      formData.append('schedule', values.schedule.trim());
+      formData.append('address_uz', values.address_uz.trim());
+      formData.append('address_ru', values.address_ru.trim());
+      formData.append('landmark_uz', values.landmark_uz.trim() || '');
+      formData.append('landmark_ru', values.landmark_ru.trim() || '');
+      formData.append('address_link', values.address_link.trim() || '');
       formData.append('latitude', values.latitude.toString());
       formData.append('longitude', values.longitude.toString());
       formData.append(
@@ -137,6 +137,7 @@ const BranchModal: React.FC<BranchModalProps> = ({
       }
       queryClient.invalidateQueries({ queryKey: ['branchesData'] });
       handleCloseFormModal();
+      form.resetFields()
     } catch (error) {
       console.error('Error creating branch:', error);
       message.error('Failed to create branch!');
@@ -295,7 +296,7 @@ const BranchModal: React.FC<BranchModalProps> = ({
                 ? [{ required: true, message: 'Please upload an image!' }]
                 : undefined
             }
-            className="mb-4 "
+            className="mb-4"
             style={{ width: '100%' }}
           >
             <Upload
@@ -306,7 +307,7 @@ const BranchModal: React.FC<BranchModalProps> = ({
               className="w-full"
               style={{ width: '100%' }}
             >
-              <Button icon={<UploadOutlined />}>Upload Image</Button>
+              <Button icon={<UploadOutlined />} block>Upload Image</Button>
             </Upload>
           </Form.Item>
           <Form.Item

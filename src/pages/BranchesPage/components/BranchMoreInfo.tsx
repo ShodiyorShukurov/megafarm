@@ -14,7 +14,6 @@ const BranchMoreInfo: React.FC<BranchMoreInfoProps> = ({
   handleCloseModal,
   selectedBranchMoreInfo,
 }) => {
-
   const getBranchDetails = async () => {
     if (!selectedBranchMoreInfo) return null;
     try {
@@ -54,7 +53,6 @@ const BranchMoreInfo: React.FC<BranchMoreInfoProps> = ({
         Loading...
       </Modal>
     );
-
 
   if (error)
     return (
@@ -105,7 +103,9 @@ const BranchMoreInfo: React.FC<BranchMoreInfoProps> = ({
     >
       <Descriptions column={1} bordered>
         <Descriptions.Item label="ID">{data?.id}</Descriptions.Item>
-        <Descriptions.Item label="Branch ID">{data?.branch_id}</Descriptions.Item>
+        <Descriptions.Item label="Branch ID">
+          {data?.branch_id}
+        </Descriptions.Item>
         <Descriptions.Item label="Name (UZ)">{data?.name_uz}</Descriptions.Item>
         <Descriptions.Item label="Name (RU)">{data?.name_ru}</Descriptions.Item>
         <Descriptions.Item label="Phone Number">
@@ -131,7 +131,13 @@ const BranchMoreInfo: React.FC<BranchMoreInfoProps> = ({
           {data?.landmark_ru}
         </Descriptions.Item>
         <Descriptions.Item label="Address Link">
-          {data?.address_link}
+          <a
+            href={data?.address_link}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open in Maps
+          </a>
         </Descriptions.Item>
         <Descriptions.Item label="Image">
           <Image

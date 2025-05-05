@@ -85,12 +85,6 @@ const UserData: React.FC<UserDataProps> = ({
       ),
     },
     {
-      title: 'Bot Step',
-      dataIndex: 'bot_step',
-      key: 'bot_step',
-      align: 'center',
-    },
-    {
       title: 'Created At',
       dataIndex: 'created_at',
       key: 'created_at',
