@@ -11,14 +11,14 @@ export interface IItem {
 }
 
 export interface IReceipt {
-  id: number;
+  id: string;
   receipt_no: number;
   type: string;
   user_id: number;
   branch: number;
   date: string;
   payments: IPayment[];
-  amount: number;
+  amount: string;
   items: IItem[];
   created_at: string;
 }

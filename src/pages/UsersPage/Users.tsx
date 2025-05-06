@@ -24,6 +24,8 @@ const Users = () => {
     setSearchPhone,
     refetch,
     handleSearch,
+    currentPage,
+    setCurrentPage,
   } = UseUser();
 
   if (isLoading) {
@@ -46,7 +48,7 @@ const Users = () => {
             const value = e.target.value;
             setSearchPhone(value);
             if (value.trim() === '') {
-              refetch(); 
+              refetch();
             }
           }}
           size="large"
@@ -77,10 +79,13 @@ const Users = () => {
       </div>
 
       <UserData
-        data={data}
+        data={data.data}
+        count={data.count}
         handleOpenEditModal={handleOpenEditModal}
         handleOpenUserMoreInfo={handleOpenUserMoreInfo}
         handleDeleteModal={handleDeleteModal}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
       />
 
       <UserEditModal
@@ -91,7 +96,7 @@ const Users = () => {
 
       <UserMoreInfo
         isUserMoreInfoOpen={isUserMoreInfoOpen}
-        selectedUserMoreInfo={selectedUserMoreInfo}
+        selectedUserMoreInfo={selectedUserMoreInfo || null}
         handleCloseUserMoreInfo={handleCloseUserMoreInfo}
       />
     </Admin>

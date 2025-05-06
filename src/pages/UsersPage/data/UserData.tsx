@@ -9,10 +9,13 @@ import {
 import { IUser } from '../../../types/interface';
 
 interface UserDataProps {
-  data: IUser[];
+  data:IUser[];
+  count:number;
   handleOpenEditModal: (record: IUser) => void;
-  handleOpenUserMoreInfo: (id: number) => void;
+  handleOpenUserMoreInfo: (userId: number, chat_id:number) => void;
   handleDeleteModal: (id: number | null) => void;
+  setCurrentPage: (page: number) => void;
+  currentPage: number;
 }
 
 const UserData: React.FC<UserDataProps> = ({
@@ -20,6 +23,9 @@ const UserData: React.FC<UserDataProps> = ({
   handleOpenEditModal,
   handleOpenUserMoreInfo,
   handleDeleteModal,
+  setCurrentPage,
+  currentPage,
+  count
 }) => {
   const columns: ColumnsType<IUser> = [
     {
@@ -45,12 +51,6 @@ const UserData: React.FC<UserDataProps> = ({
       render: (phone_number) => (
         <a href={'tel:' + phone_number}>{phone_number}</a>
       ),
-    },
-    {
-      title: 'Code',
-      dataIndex: 'code',
-      key: 'code',
-      align: 'center',
     },
     {
       title: 'Balance',
@@ -119,7 +119,7 @@ const UserData: React.FC<UserDataProps> = ({
           <Button
             type="default"
             icon={<InfoCircleOutlined />}
-            onClick={() => handleOpenUserMoreInfo(record.id)}
+            onClick={() => handleOpenUserMoreInfo(record.id, record.chat_id)}
           />
         </Space>
       ),
@@ -132,7 +132,12 @@ const UserData: React.FC<UserDataProps> = ({
         columns={columns}
         dataSource={data}
         rowKey="id"
-        pagination={{ pageSize: 10 }}
+        pagination={{
+          current: currentPage,
+          pageSize: 10,
+          total: count,
+          onChange: (page) => setCurrentPage(page),
+        }}
         scroll={{ x: 1200 }}
         className="shadow-lg rounded-lg"
       />

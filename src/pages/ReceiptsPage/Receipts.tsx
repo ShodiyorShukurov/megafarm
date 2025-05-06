@@ -4,7 +4,6 @@ import Admin from '../../components/Admin';
 import UseReceipts from '../../hooks/UseReceipts';
 import MoreInfo from './components/MoreInfo';
 import ReceiptsData from './data/ReceiptsData';
-import { useState } from 'react';
 
 const Receipts = () => {
   const {
@@ -15,15 +14,25 @@ const Receipts = () => {
     data,
     isLoading,
     error,
+    setCurrentPage,
+    currentPage,
+    setSearchUserId,
+    searchUserId,
+    refetch,
+    receiptNo,
+    setReceiptNo,
+    handleSearch
   } = UseReceipts();
-console.log(data, isLoading, error);
-  const [userId, setUserId] = useState('');
-  const [receiptNo, setReceiptNo] = useState('');
 
-  // Qidirish tugmasi bosilganda ishlaydigan funksiya (o'zingiz yozasiz)
-  const handleSearch = () => {
-    // userId va receiptNo qiymatlari bilan qidiruv funksiyasini yozing
-  };
+ 
+
+  if (isLoading) {
+    return <Admin>Loading...</Admin>;
+  }
+
+  if (error) {
+    return <Admin>Error: {error.message}</Admin>;
+  }
 
   return (
     <Admin>
@@ -32,8 +41,14 @@ console.log(data, isLoading, error);
         <Input
           className="max-w-xs"
           placeholder="User ID"
-          value={userId}
-          onChange={(e) => setUserId(e.target.value.replace(/\D/, ''))}
+          value={searchUserId}
+          onChange={(e) => {
+            const value = e.target.value;
+            setSearchUserId(value);
+            if (value.trim() === '') {
+              refetch();
+            }
+          }}
           size="large"
           allowClear
           type="text"
@@ -83,7 +98,13 @@ console.log(data, isLoading, error);
         </Button>
       </div>
 
-      <ReceiptsData handleViewDetails={handleViewDetails} />
+      <ReceiptsData
+        data={data.data}
+        count={data.count}
+        handleViewDetails={handleViewDetails}
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
+      />
 
       <MoreInfo
         isModalOpen={isModalOpen}

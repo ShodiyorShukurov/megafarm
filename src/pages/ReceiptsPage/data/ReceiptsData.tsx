@@ -1,79 +1,33 @@
-import { Table, Button} from 'antd';
-import { useState, useEffect } from 'react';
+import { Table, Button } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { IReceipt } from '../../../types/interface';
 
 interface ReceiptsDataProps {
-  handleViewDetails: (record: IReceipt) => void;
+  handleViewDetails: (record: string) => void;
+  data: IReceipt[];
+  count: number;
+  setCurrentPage: (page: number) => void;
+  currentPage: number;  
 }
 
-const ReceiptsData: React.FC<ReceiptsDataProps> = ({handleViewDetails}) => {
-  const [data, setData] = useState<IReceipt[]>([]);
-
-
-  useEffect(() => {
-    const sampleData: IReceipt[] = [
-      {
-        id: 1,
-        receipt_no: 0,
-        type: 'string',
-        user_id: 0,
-        branch: 0,
-        date: 'string',
-        payments: [
-          {
-            name: 'CASH',
-            value: 10000,
-          },
-        ],
-        amount: 89,
-        items: [
-          {
-            product_id: 101,
-            name: 'Paracetamol',
-            quantity: 2,
-            price: 5000,
-          },
-        ],
-        created_at: '2025-05-03T11:10:53.990Z',
-      },
-      {
-        id: 2,
-        receipt_no: 0,
-        type: 'string',
-        user_id: 0,
-        branch: 0,
-        date: 'string',
-        payments: [
-          {
-            name: 'CASH',
-            value: 10000,
-          },
-        ],
-        amount: 78,
-        items: [
-          {
-            product_id: 101,
-            name: 'Paracetamol',
-            quantity: 2,
-            price: 5000,
-          },
-        ],
-        created_at: '2025-05-03T11:10:53.990Z',
-      },
-    ];
-    setData(sampleData);
-  }, []);
-
+const ReceiptsData: React.FC<ReceiptsDataProps> = ({
+  handleViewDetails,
+  data,
+  setCurrentPage,
+  currentPage,
+  count
+}) => {
+console.log(data, 'data receipts');
 
   const columns: ColumnsType<IReceipt> = [
     {
-      title: 'ID',
+      title: '№',
       dataIndex: 'id',
       key: 'id',
-      sorter: (a, b) => a.id - b.id,
+      sorter: (a, b) => Number(a.id) - Number(b.id),
       align: 'center',
+      render: (_, __, index) => index + 1,
     },
     {
       title: 'Receipt No',
@@ -111,7 +65,7 @@ const ReceiptsData: React.FC<ReceiptsDataProps> = ({handleViewDetails}) => {
       dataIndex: 'amount',
       key: 'amount',
       render: (value) => `${value.toLocaleString()} UZS`,
-      sorter: (a, b) => a.amount - b.amount,
+      sorter: (a, b) => Number(a.amount) - Number(b.amount),
       align: 'center',
     },
     {
@@ -119,7 +73,8 @@ const ReceiptsData: React.FC<ReceiptsDataProps> = ({handleViewDetails}) => {
       dataIndex: 'created_at',
       key: 'created_at',
       render: (date) => new Date(date).toLocaleString(),
-      sorter: (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+      sorter: (a, b) =>
+        new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
       align: 'center',
     },
     {
@@ -130,7 +85,7 @@ const ReceiptsData: React.FC<ReceiptsDataProps> = ({handleViewDetails}) => {
         <Button
           type="primary"
           icon={<InfoCircleOutlined />}
-          onClick={() => handleViewDetails(record)}
+          onClick={() => handleViewDetails(record.id)}
         >
           View Details
         </Button>
@@ -138,19 +93,21 @@ const ReceiptsData: React.FC<ReceiptsDataProps> = ({handleViewDetails}) => {
     },
   ];
 
-
   return (
     <div className="min-h-screen">
-
       <Table
         columns={columns}
         dataSource={data}
         rowKey="id"
-        pagination={{ pageSize: 10 }}
+        pagination={{
+          current: currentPage,
+          pageSize: 10,
+          total: count,
+          onChange: (page) => setCurrentPage(page),
+        }}
         scroll={{ x: 1000 }}
         className="shadow-lg rounded-lg"
       />
-
     </div>
   );
 };
