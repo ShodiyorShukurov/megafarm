@@ -1,37 +1,31 @@
 import { Table, Button, Tag } from 'antd';
-import { useState, useEffect } from 'react';
 import type { ColumnsType } from 'antd/es/table';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { IBonunes } from '../../../types/interface';
 
 interface ReceiptsDataProps {
-  handleViewDetails: (record: IBonunes) => void;
+  data: IBonunes[];
+  handleViewDetails: (record: number) => void;
+  count: number;
+  currentPage: number;
+  setCurrentPage: (page: number) => void; 
 }
 
-const BonunesData: React.FC<ReceiptsDataProps> = ({ handleViewDetails }) => {
-  const [data, setData] = useState<IBonunes[]>([]);
-
-  useEffect(() => {
-    const sampleData: IBonunes[] = [
-      {
-        id: 1,
-        receipt_no: 0,
-        user_id: 0,
-        amount: 89,
-        income: true,
-        created_at: '2025-05-03T11:10:53.990Z',
-      },
-    ];
-    setData(sampleData);
-  }, []);
-
+const BonunesData: React.FC<ReceiptsDataProps> = ({
+  handleViewDetails,
+  data,
+  count,
+  currentPage,
+  setCurrentPage,
+}) => {
   const columns: ColumnsType<IBonunes> = [
     {
       title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
+      dataIndex: 'index',
+      key: 'index',
       sorter: (a, b) => a.id - b.id,
       align: 'center',
+      render: (_, __, index) => index + 1,
     },
     {
       title: 'Receipt No',
@@ -55,17 +49,15 @@ const BonunesData: React.FC<ReceiptsDataProps> = ({ handleViewDetails }) => {
       align: 'center',
     },
     {
-        title: 'Income',
-        dataIndex: 'income',
-        key: 'income',
-        render: (value: boolean) => (
-          <Tag color={value ? 'green' : 'red'}>
-            {value ? 'True' : 'False'}
-          </Tag>
-        ),
-        sorter: (a, b) => Number(a.income) - Number(b.income),
-        align: 'center',
-      },
+      title: 'Income',
+      dataIndex: 'income',
+      key: 'income',
+      render: (value: boolean) => (
+        <Tag color={value ? 'green' : 'red'}>{value ? 'True' : 'False'}</Tag>
+      ),
+      sorter: (a, b) => Number(a.income) - Number(b.income),
+      align: 'center',
+    },
     {
       title: 'Created At',
       dataIndex: 'created_at',
@@ -83,7 +75,7 @@ const BonunesData: React.FC<ReceiptsDataProps> = ({ handleViewDetails }) => {
         <Button
           type="primary"
           icon={<InfoCircleOutlined />}
-          onClick={() => handleViewDetails(record)}
+          onClick={() => handleViewDetails(record.id)}
         >
           View Details
         </Button>
@@ -97,7 +89,12 @@ const BonunesData: React.FC<ReceiptsDataProps> = ({ handleViewDetails }) => {
         columns={columns}
         dataSource={data}
         rowKey="id"
-        pagination={{ pageSize: 10 }}
+        pagination={{
+          total: count,
+          pageSize: 10,
+          current: currentPage,
+          onChange: (page) => setCurrentPage(page),
+        }}
         scroll={{ x: 1000 }}
         className="shadow-lg rounded-lg"
       />

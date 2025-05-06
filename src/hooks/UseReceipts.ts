@@ -50,9 +50,9 @@ const UseReceipts = () => {
     try {
       let query = `/receipts/list?limit=10&page=${currentPage}`;
 
-      if (searchUserId.trim()) {
+      if (searchUserId.trim().length >= 4) {
         query += `&user_id=${searchUserId.trim()}`;
-      } else if (receiptNo.trim()) {
+      } else if (receiptNo.trim().length >= 1) {
         query += `&receipt_no=${receiptNo.trim()}`;
       } else {
         const res = await getReceiptsData();
@@ -87,7 +87,7 @@ const UseReceipts = () => {
     setSearchUserId,
     receiptNo,
     setReceiptNo,
-    refetch
+    refetch,
   };
 };
 

@@ -4,7 +4,6 @@ import Admin from '../../components/Admin';
 import UseBonuses from '../../hooks/UseBonuses';
 import MoreInfo from './components/MoreInfo';
 import BonusesData from './data/BonusesData';
-import { useState } from 'react';
 
 const Bonuses = () => {
   const {
@@ -15,15 +14,23 @@ const Bonuses = () => {
     data,
     isLoading,
     error,
+    currentPage,
+    setCurrentPage,
+    searchUserId,
+    setSearchUserId,
+    receiptNo,
+    setReceiptNo,
+    refetch,
+    handleSearch,
   } = UseBonuses();
-console.log(data, isLoading, error);
-  const [userId, setUserId] = useState('');
-  const [receiptNo, setReceiptNo] = useState('');
 
-  // Qidirish tugmasi bosilganda ishlaydigan funksiya (o'zingiz yozasiz)
-  const handleSearch = () => {
-    // userId va receiptNo qiymatlari bilan qidiruv funksiyasini yozing
-  };
+  if (isLoading) {
+    return <Admin>Loading...</Admin>;
+  }
+
+  if (error) {
+    return <Admin>Error: {error.message}</Admin>;
+  }
 
   return (
     <Admin>
@@ -32,8 +39,14 @@ console.log(data, isLoading, error);
         <Input
           className="max-w-xs"
           placeholder="User ID"
-          value={userId}
-          onChange={(e) => setUserId(e.target.value.replace(/\D/, ''))}
+          value={searchUserId}
+          onChange={(e) => {
+            const value = e.target.value;
+            setSearchUserId(value);
+            if (value.trim() === '') {
+              refetch();
+            }
+          }}
           size="large"
           allowClear
           type="text"
@@ -82,7 +95,13 @@ console.log(data, isLoading, error);
           Qidirish
         </Button>
       </div>
-      <BonusesData handleViewDetails={handleViewDetails} />
+      <BonusesData
+        data={data.data}
+        count={data.count}
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
+        handleViewDetails={handleViewDetails}
+      />
       <MoreInfo
         isModalOpen={isModalOpen}
         handleCloseModal={handleCloseModal}
