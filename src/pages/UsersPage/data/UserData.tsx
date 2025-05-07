@@ -85,15 +85,6 @@ const UserData: React.FC<UserDataProps> = ({
       ),
     },
     {
-      title: 'Created At',
-      dataIndex: 'created_at',
-      key: 'created_at',
-      align: 'center',
-      render: (date) => new Date(date).toLocaleString(),
-      sorter: (a, b) =>
-        new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
-    },
-    {
       title: 'Actions',
       key: 'actions',
       align: 'center',

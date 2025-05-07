@@ -18,7 +18,6 @@ const ReceiptsData: React.FC<ReceiptsDataProps> = ({
   currentPage,
   count
 }) => {
-console.log(data, 'data receipts');
 
   const columns: ColumnsType<IReceipt> = [
     {
@@ -66,15 +65,6 @@ console.log(data, 'data receipts');
       key: 'amount',
       render: (value) => `${value.toLocaleString()} UZS`,
       sorter: (a, b) => Number(a.amount) - Number(b.amount),
-      align: 'center',
-    },
-    {
-      title: 'Created At',
-      dataIndex: 'created_at',
-      key: 'created_at',
-      render: (date) => new Date(date).toLocaleString(),
-      sorter: (a, b) =>
-        new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
       align: 'center',
     },
     {

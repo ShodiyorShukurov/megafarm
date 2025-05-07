@@ -10,17 +10,25 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/charts": "^2.2.7",
     "@ant-design/v5-patch-for-react-19": "^1.0.3",
+    "@ckeditor/ckeditor5-build-classic": "^41.4.2",
+    "@ckeditor/ckeditor5-react": "^9.5.0",
+    "@ckeditor/ckeditor5-theme-lark": "^45.0.0",
     "@tailwindcss/vite": "^4.1.5",
     "@tanstack/react-query": "^5.75.2",
     "@tanstack/react-router": "^1.119.0",
     "@tanstack/react-start": "^1.119.0",
+    "@tinymce/tinymce-react": "^6.1.0",
     "antd": "^5.24.9",
     "axios": "^1.9.0",
+    "ckeditor5": "^45.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.5.3",
+    "react-simple-wysiwyg": "^3.2.2",
     "tailwindcss": "^4.1.5",
+    "tinymce": "^7.8.0",
     "vinxi": "^0.5.6"
   },
   "devDependencies": {

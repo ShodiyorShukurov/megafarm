@@ -59,15 +59,6 @@ const BonunesData: React.FC<ReceiptsDataProps> = ({
       align: 'center',
     },
     {
-      title: 'Created At',
-      dataIndex: 'created_at',
-      key: 'created_at',
-      render: (date) => new Date(date).toLocaleString(),
-      sorter: (a, b) =>
-        new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
-      align: 'center',
-    },
-    {
       title: 'Actions',
       key: 'actions',
       align: 'center',

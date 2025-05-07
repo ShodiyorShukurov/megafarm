@@ -5,6 +5,8 @@ import Users from './pages/UsersPage/Users';
 import Receipts from './pages/ReceiptsPage/Receipts';
 import Bonuses from './pages/BonusesPage/Bonuses';
 import Branches from './pages/BranchesPage/Branches';
+import Dashborad from './pages/DashboardPage/Dashboard';
+import Message from './pages/MessagesPage/Message';
 
 const App = () => {
   return (
@@ -16,6 +18,8 @@ const App = () => {
       <Route path="/receipts" element={<Receipts />} />
       <Route path="/bonuses" element={<Bonuses />} />
       <Route path="/branches" element={<Branches />} />
+      <Route path="/dashboard" element={<Dashborad />} />
+      <Route path="/messages" element={<Message />} />
       </Route>
     </Routes>
   );

@@ -28,10 +28,13 @@ const UserMoreInfo: React.FC<UserMoreInfoProps> = ({
       return res.data.data;
     } catch (error) {
       console.error('Error fetching user more info:', error);
-      throw new Error('Failed to fetch user more info');
+      if (error instanceof Error && (error as any).response && (error as any).response.status === 404) {
+        return []; 
+      }
+      return [];
     }
   };
-
+  
   const getUserTransactions = async () => {
     if (!selectedUserMoreInfo?.chat_id) return null;
     try {
@@ -41,7 +44,10 @@ const UserMoreInfo: React.FC<UserMoreInfoProps> = ({
       return res.data;
     } catch (error) {
       console.error('Error fetching user transactions:', error);
-      throw new Error('Failed to fetch user transactions');
+      if (error instanceof Error && (error as any).response && (error as any).response.status === 404) {
+        return []; 
+      }
+      return [];
     }
   };
 
