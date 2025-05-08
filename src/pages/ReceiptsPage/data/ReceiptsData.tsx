@@ -95,7 +95,7 @@ const ReceiptsData: React.FC<ReceiptsDataProps> = ({
           total: count,
           onChange: (page) => setCurrentPage(page),
         }}
-        scroll={{ x: 1000 }}
+        scroll={{ x: true }}
         className="shadow-lg rounded-lg"
       />
     </div>

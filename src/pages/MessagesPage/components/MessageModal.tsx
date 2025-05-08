@@ -11,7 +11,7 @@ import { PlusCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import api from '../../../api';
 import { useQueryClient } from '@tanstack/react-query';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'; 
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { useState } from 'react';
 
 interface MessageFormValues {
@@ -25,6 +25,7 @@ interface MessageFormValues {
 interface MessageModalProps {
   isModalOpen: boolean;
   setIsModalOpen: (isModalOpen: boolean) => void;
+  
 }
 
 const MessageModal: React.FC<MessageModalProps> = ({
@@ -32,13 +33,13 @@ const MessageModal: React.FC<MessageModalProps> = ({
   setIsModalOpen,
 }) => {
   const [form] = Form.useForm();
-  const [textValue, setTextValue] = useState(''); 
+  const [textValue, setTextValue] = useState('<p></p>');
   const queryClient = useQueryClient();
 
   const handleFinish = async (values: MessageFormValues) => {
     try {
       const formData = new FormData();
-      formData.append('text', values.text.trim()); // Use form value
+      formData.append('text', values.text.trim());
       if (values.balance_from) {
         formData.append('balance_from', String(values.balance_from));
       }
@@ -47,7 +48,7 @@ const MessageModal: React.FC<MessageModalProps> = ({
       }
       formData.append('bot_lang', values.bot_lang.trim());
       if (values.file && values.file[0]?.originFileObj) {
-        formData.append('file', values.file[0].originFileObj); // Only append if file exists
+        formData.append('file', values.file[0].originFileObj); 
       }
 
       const res = await api.post('/message/send', formData);
@@ -63,7 +64,7 @@ const MessageModal: React.FC<MessageModalProps> = ({
       queryClient.invalidateQueries({ queryKey: ['messagesData'] });
       setIsModalOpen(false);
       form.resetFields();
-      setTextValue('<p></p>'); // Reset editor
+      setTextValue('<p></p>'); 
     } catch (error) {
       console.error('Error sending message:', error);
       message.error('Failed to send message!');
@@ -110,7 +111,7 @@ const MessageModal: React.FC<MessageModalProps> = ({
         >
           <Form.Item
             label="Text"
-            name="text" // Add name for form integration
+            name="text"
             className="mb-4"
             style={{ width: '100%' }}
             rules={[
@@ -121,7 +122,13 @@ const MessageModal: React.FC<MessageModalProps> = ({
             ]}
           >
             <CKEditor
-              editor={ClassicEditor}
+              editor={
+                ClassicEditor as unknown as {
+                  create(...args: any): Promise<any>;
+                  EditorWatchdog: any;
+                  ContextWatchdog: any;
+                }
+              }
               config={{
                 toolbar: [
                   'heading',
@@ -147,6 +154,10 @@ const MessageModal: React.FC<MessageModalProps> = ({
                   'undo',
                   'redo',
                   'removeFormat',
+                  '|',
+                  'fontSize',
+                  'fontColor',
+                  'fontBackgroundColor',
                 ],
               }}
               data={textValue}
@@ -156,7 +167,7 @@ const MessageModal: React.FC<MessageModalProps> = ({
               onChange={(_, editor) => {
                 const data = editor.getData();
                 setTextValue(data);
-                form.setFieldsValue({ text: data }); 
+                form.setFieldsValue({ text: data });
               }}
             />
           </Form.Item>
