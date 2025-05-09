@@ -64,33 +64,109 @@
 
 // export default DemoSixCharts;
 
-import React from 'react';
-import { Line } from '@ant-design/charts';
+import React, { useEffect, useState } from 'react';
 import Admin from '../../components/Admin';
+import ReactApexChart from 'react-apexcharts';
+import UseDashboard from '../../hooks/UseDashboard';
 
-const Page: React.FC = () => {
-  const data = [
-    { year: '1991', value: 3 },
-    { year: '1992', value: 4 },
-    { year: '1993', value: 3.5 },
-    { year: '1994', value: 5 },
-    { year: '1995', value: 4.9 },
-    { year: '1996', value: 6 },
-    { year: '1997', value: 7 },
-    { year: '1998', value: 9 },
-    { year: '1999', value: 13 },
-  ];
+interface MonthlyAmount {
+  month: string;
+  total_amount: number;
+}
 
-  const config = {
-    data,
-    height: 400,
-    xField: 'year',
-    yField: 'value',
-  };
+const ApexChart: React.FC = () => {
+  const { data, isLoading, error } = UseDashboard();
+
+  const formattedData: MonthlyAmount[] =
+    data?.monthly_amount?.map((item: any) => ({
+      month: item.month.trim(),
+      total_amount: parseInt(item.total_amount, 10),
+    })) || [];
+
+  const branchName = data?.monthly_amount?.[0]?.name_uz || 'Filial';
+
+  const [chartData, setChartData] = useState<{
+    series: { name: string; data: number[] }[];
+    options: ApexCharts.ApexOptions;
+  }>({
+    series: [
+      {
+        name: branchName,
+        data: [],
+      },
+    ],
+    options: {
+      chart: {
+        height: 350,
+        type: 'line',
+        zoom: { enabled: false },
+      },
+      dataLabels: { enabled: false },
+      stroke: { curve: 'straight' },
+      title: {
+        text: 'Product Trends by Month',
+        align: 'left',
+      },
+      grid: {
+        row: {
+          colors: ['#f3f3f3', 'transparent'],
+          opacity: 0.5,
+        },
+      },
+      xaxis: {
+        categories: [],
+      },
+      tooltip: {
+        enabled: true,
+        shared: true,
+        intersect: false,
+        x: {
+          show: true,
+        },
+        y: {
+          formatter: (val: number) => `${val.toLocaleString()} so'm`,
+        },
+      },
+    },
+  });
+
+  useEffect(() => {
+    if (formattedData.length) {
+      const months = formattedData.map((item) => item.month);
+      const totalAmounts = formattedData.map((item) => item.total_amount);
+
+      setChartData((prevState) => ({
+        ...prevState,
+        series: [
+          {
+            name: branchName,
+            data: totalAmounts,
+          },
+        ],
+        options: {
+          ...prevState.options,
+          xaxis: {
+            ...prevState.options.xaxis,
+            categories: months,
+          },
+        },
+      }));
+    }
+  }, [formattedData, branchName]);
+
+  if (isLoading) return <Admin>Loading...</Admin>;
+  if (error) return <Admin>Error: {error.message}</Admin>;
+
   return (
     <Admin>
-      <Line {...config} />
+      <ReactApexChart
+        options={chartData.options}
+        series={chartData.series}
+        type="line"
+        height={350}
+      />
     </Admin>
   );
 };
-export default Page;
+
+export default ApexChart;

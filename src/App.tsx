@@ -7,6 +7,7 @@ import Bonuses from './pages/BonusesPage/Bonuses';
 import Branches from './pages/BranchesPage/Branches';
 import Dashborad from './pages/DashboardPage/Dashboard';
 import Message from './pages/MessagesPage/Message';
+import AdminAdd from './pages/AdminAddPage/AdminAdd';
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
       <Route path="/branches" element={<Branches />} />
       <Route path="/dashboard" element={<Dashborad />} />
       <Route path="/messages" element={<Message />} />
+      <Route path="/admin-add" element={<AdminAdd />} />
       </Route>
     </Routes>
   );

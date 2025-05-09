@@ -36,16 +36,16 @@ const UseMessage = () => {
     if (!id) return;
 
     try {
-      const res = await api.delete(`/message/${id}`);
+      const res = await api.delete(`/message/delete/${id}`);
       if (res.data.status === 200) {
         message.success('User deleted successfully!');
-        queryClient.invalidateQueries({ queryKey: ['branchesData'] });
+        queryClient.invalidateQueries({ queryKey: ['messageData'] });
       }
       if (res.data.status === 400) {
         message.error('Failed to delete user!');
       }
 
-      queryClient.invalidateQueries({ queryKey: ['branchesData'] });
+      queryClient.invalidateQueries({ queryKey: ['messageData'] });
     } catch (error) {
       message.error('Failed to delete user!');
     }

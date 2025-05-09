@@ -61,7 +61,7 @@ const MessageModal: React.FC<MessageModalProps> = ({
         message.error('Server error!');
       }
 
-      queryClient.invalidateQueries({ queryKey: ['messagesData'] });
+      queryClient.invalidateQueries({ queryKey: ['messageData'] });
       setIsModalOpen(false);
       form.resetFields();
       setTextValue('<p></p>'); 
