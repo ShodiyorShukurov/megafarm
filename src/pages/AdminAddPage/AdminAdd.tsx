@@ -1,14 +1,49 @@
-import Admin from '../../components/Admin'
-import useAdmin from '../../hooks/UseAdmin'
+import Admin from '../../components/Admin';
+import useAdmin from '../../hooks/UseAdmin';
+import AdminModal from './components/AdminModal';
+import AdminAddData from './data/AdminAddData';
 
 const AdminAdd = () => {
+  const {
+    data,
+    isLoading,
+    error,
+    currentPage,
+    setCurrentPage,
+    handleDeleteModal,
+    handleOpenFormModal,
+    handleCloseFormModal,
+    isModalOpen,
+    selectedAdmin,
+  } = useAdmin();
 
-    useAdmin()
+  if (isLoading) {
+    return <Admin>Loading...</Admin>;
+  }
+
+  if (error) {
+    return <Admin>Error: {error.message}</Admin>;
+  }
+
   return (
     <Admin>
-        a
-    </Admin>
-  )
-}
+      <AdminModal
+        isModalOpen={isModalOpen}
+        handleOpenFormModal={handleOpenFormModal}
+        selectedAdmin={selectedAdmin}
+        handleCloseFormModal={handleCloseFormModal}
+      />
 
-export default AdminAdd
+      <AdminAddData
+        data={data.data}
+        count={data.count}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        handleDeleteModal={handleDeleteModal}
+        handleOpenFormModal={handleOpenFormModal}
+      />
+    </Admin>
+  );
+};
+
+export default AdminAdd;

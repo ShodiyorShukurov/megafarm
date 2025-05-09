@@ -22,7 +22,7 @@ const Login: React.FC = () => {
         const { token } = res.data;
         localStorage.setItem('token', token);
         localStorage.setItem('role', res.data.data.role);
-        window.location.href = '/users'; 
+        window.location.href = '/dashboard'; 
         setLoading(false);
       } else {
         message.error("Login failed. Please check your credentials.");

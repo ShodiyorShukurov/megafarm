@@ -15,13 +15,17 @@ const App = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<Navigate to="/login" />} />
       <Route element={<PrivateRoute />}>
-      <Route path="/users" element={<Users />} />
-      <Route path="/receipts" element={<Receipts />} />
-      <Route path="/bonuses" element={<Bonuses />} />
-      <Route path="/branches" element={<Branches />} />
-      <Route path="/dashboard" element={<Dashborad />} />
-      <Route path="/messages" element={<Message />} />
-      <Route path="/admin-add" element={<AdminAdd />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/receipts" element={<Receipts />} />
+        <Route path="/bonuses" element={<Bonuses />} />
+        <Route path="/branches" element={<Branches />} />
+        <Route path="/dashboard" element={<Dashborad />} />
+        <Route path="/messages" element={<Message />} />
+        {localStorage.getItem('role') === 'superadmin' ? (
+          <Route path="/admin-add" element={<AdminAdd />} />
+        ) : (
+          ''
+        )}
       </Route>
     </Routes>
   );

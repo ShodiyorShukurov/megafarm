@@ -76,3 +76,13 @@ export interface IMessage {
   file_type: string;
   created_at: string;
 }
+
+
+export interface IAdmin {
+  id: string;
+  admin_id: string;
+  admin_email: string;
+  admin_password: string;
+  role: string;
+  created_at: string;
+}
