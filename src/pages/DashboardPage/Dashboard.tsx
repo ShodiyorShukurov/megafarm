@@ -15,6 +15,8 @@ import UseDashboard from '../../hooks/UseDashboard'
 import useNewCustomerFlow from '../../hooks/useNewCustomerFlow'
 import BranchesNewUsers from '../../components/BranchesNewUsers'
 import useBranchesNewUsers from '../../hooks/useBranchesNewUsers'
+import Chart from '../../components/Chart'
+import ApexChartData from '../../components/ApexChart'
 
 const ApexChart: React.FC = () => {
 	const { data, isLoading, error } = UseDashboard()
@@ -33,10 +35,8 @@ const ApexChart: React.FC = () => {
 		toDate: newCustomerToDate,
 	} = useNewCustomerFlow()
 
-	const {
-		data: branchesNewUsersData,
-		setSelectDateRangeBranchesNewUsers,
-	} = useBranchesNewUsers()
+	const { data: branchesNewUsersData, setSelectDateRangeBranchesNewUsers } =
+		useBranchesNewUsers()
 
 	if (isLoading) return <Admin>Loading...</Admin>
 	if (error) return <Admin>Error: {error?.message}</Admin>
@@ -102,9 +102,6 @@ const ApexChart: React.FC = () => {
 				</Col>
 			</Row>
 
-			{/* <Chart data={data}/> */}
-
-			{/* <ApexChartData data={data}/> */}
 			<BranchCashback
 				branchCashbackData={branchCashbackData}
 				setSelectDateRangeDau={setSelectDateRangeDau}
@@ -123,6 +120,10 @@ const ApexChart: React.FC = () => {
 				branchesNewUsersData={branchesNewUsersData}
 				setSelectDateRangeBranchesNewUsers={setSelectDateRangeBranchesNewUsers}
 			/>
+
+			<Chart data={data} />
+
+			<ApexChartData data={data} />
 		</Admin>
 	)
 }
