@@ -15,8 +15,8 @@ import UseDashboard from '../../hooks/UseDashboard'
 import useNewCustomerFlow from '../../hooks/useNewCustomerFlow'
 import BranchesNewUsers from '../../components/BranchesNewUsers'
 import useBranchesNewUsers from '../../hooks/useBranchesNewUsers'
-import Chart from '../../components/Chart'
-import ApexChartData from '../../components/ApexChart'
+// import Chart from '../../components/Chart'
+// import ApexChartData from '../../components/ApexChart'
 
 const ApexChart: React.FC = () => {
 	const { data, isLoading, error } = UseDashboard()
@@ -121,9 +121,9 @@ const ApexChart: React.FC = () => {
 				setSelectDateRangeBranchesNewUsers={setSelectDateRangeBranchesNewUsers}
 			/>
 
-			<Chart data={data} />
+			{/* <Chart data={data} />
 
-			<ApexChartData data={data} />
+			<ApexChartData data={data} /> */}
 		</Admin>
 	)
 }

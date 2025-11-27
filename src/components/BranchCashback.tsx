@@ -63,11 +63,6 @@ const BranchCashback: React.FC<Props> = ({
 
 	const [options, setOptions] = useState<ApexOptions>({
 		chart: { type: 'bar', height: 380 },
-		title: {
-			text: "Filiallar bo'yicha keshbek ko'rinishi",
-			align: 'left',
-			style: { fontSize: '14px' },
-		},
 		plotOptions: {
 			bar: { horizontal: false, columnWidth: '50%', borderRadius: 6 },
 		},
@@ -128,7 +123,20 @@ const BranchCashback: React.FC<Props> = ({
 	}
 
 	return (
-		<div style={{ width: '100%', marginTop: 16 }}>
+		<div className='border p-4 rounded-2xl border-gray-300' style={{ width: '100%', marginTop: 16 }}>
+			<h2 className='text-xl font-bold mb-2'>
+				Filiallar bo'yicha keshbek ko'rinishi
+			</h2>
+			<RangePicker
+				onChange={dates => {
+					if (dates && dates[0] && dates[1]) {
+						setSelectDateRangeDau(dates as [Dayjs, Dayjs])
+					}
+				}}
+				allowClear={false}
+				value={selectDateRangeDau ?? undefined}
+				style={{ marginBottom: 16 }}
+			/>
 			<div style={{ display: 'flex', gap: 12, marginBottom: 12 }}>
 				<div
 					style={{
@@ -163,16 +171,6 @@ const BranchCashback: React.FC<Props> = ({
 					</div>
 				</div>
 			</div>
-			<RangePicker
-				onChange={dates => {
-					if (dates && dates[0] && dates[1]) {
-						setSelectDateRangeDau(dates as [Dayjs, Dayjs])
-					}
-				}}
-				allowClear={false}
-				value={selectDateRangeDau ?? undefined}
-				style={{ marginBottom: 16 }}
-			/>
 
 			<div style={{ background: '#fff', padding: 12, borderRadius: 8 }}>
 				<ReactApexChart

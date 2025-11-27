@@ -68,11 +68,6 @@ const NewCustomerFlow: React.FC<Props> = ({
 
 	const [options, setOptions] = useState<ApexOptions>({
 		chart: { type: 'bar', height: 400 },
-		title: {
-			text: "Filiallar bo'yicha yangi foydalanuvchi oqimi",
-			align: 'left',
-			style: { fontSize: '14px' },
-		},
 		plotOptions: {
 			bar: { horizontal: false, columnWidth: '45%', borderRadius: 6 },
 		},
@@ -131,8 +126,30 @@ const NewCustomerFlow: React.FC<Props> = ({
 	}
 
 	return (
-		<div style={{ width: '100%', marginTop: 16 }}>
+		<div
+			className='border p-4 border-gray-300 rounded-2xl'
+			style={{ width: '100%', marginTop: 16 }}
+		>
 			{/* Summary Cards */}
+
+			<h2 className='text-xl font-bold mb-2'>
+				Filiallar bo'yicha yangi foydalanuvchi oqimi
+			</h2>
+
+			{/* Date Range Picker */}
+			{setSelectDateRangeNewCustomer && (
+				<div style={{ marginBottom: 16 }}>
+					<RangePicker
+						onChange={dates => {
+							if (dates && dates[0] && dates[1]) {
+								setSelectDateRangeNewCustomer(dates as [Dayjs, Dayjs])
+							}
+						}}
+						value={selectDateRangeNewCustomer ?? undefined}
+					/>
+				</div>
+			)}
+
 			<div
 				style={{ display: 'flex', gap: 12, marginBottom: 12, flexWrap: 'wrap' }}
 			>
@@ -187,21 +204,6 @@ const NewCustomerFlow: React.FC<Props> = ({
 				</div>
 			</div>
 
-			{/* Date Range Picker */}
-			{setSelectDateRangeNewCustomer && (
-				<div style={{ marginBottom: 16 }}>
-					<RangePicker
-						onChange={dates => {
-							if (dates && dates[0] && dates[1]) {
-								setSelectDateRangeNewCustomer(dates as [Dayjs, Dayjs])
-							}
-						}}
-						value={selectDateRangeNewCustomer ?? undefined}
-						// style={{ width: '100%' }}
-					/>
-				</div>
-			)}
-
 			{/* Chart */}
 			<div
 				style={{
@@ -218,7 +220,6 @@ const NewCustomerFlow: React.FC<Props> = ({
 					height={400}
 				/>
 			</div>
-
 		</div>
 	)
 }

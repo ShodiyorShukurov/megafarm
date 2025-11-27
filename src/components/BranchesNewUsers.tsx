@@ -174,8 +174,14 @@ const BranchesNewUsers: React.FC<Props> = ({
 	}
 
 	return (
-		<div style={{ width: '100%', marginTop: 16 }}>
-			{/* Date Range Selectors */}
+		<div
+			className='border p-4 border-gray-300 rounded-2xl'
+			style={{ width: '100%', marginTop: 16 }}
+		>
+			<h2 className='text-xl font-bold mb-2'>
+				Filiallar bo'yicha yangi foydalanuvchilar
+			</h2>
+
 			<div
 				style={{
 					display: 'flex',
@@ -433,7 +439,6 @@ const MonthlyTab: React.FC<MonthlyTabProps> = ({ data }) => {
 					height={350}
 				/>
 			</div>
-
 		</div>
 	)
 }
