@@ -3,25 +3,25 @@ import api from '../api'
 import dayjs, { Dayjs } from 'dayjs'
 import { useState } from 'react'
 
-const useTopChecks = () => {
+const useTopBalance = () => {
 	const today = dayjs()
 	const thirtyDaysAgo = dayjs().subtract(30, 'day')
 
-	const [selectDateRangeTopChecks, setSelectDateRangeTopChecks] = useState<
+	const [selectDateRangeTopBalance, setSelectDateRangeTopBalance] = useState<
 		[Dayjs, Dayjs] | null
 	>([thirtyDaysAgo, today])
 	const [page, setPage] = useState<number>(1)
 
-	const getTopChecks = async () => {
+	const getTopBalance = async () => {
 		try {
 			const fromDate =
-				selectDateRangeTopChecks?.[0]?.format('YYYY-MM-DD') ||
+				selectDateRangeTopBalance?.[0]?.format('YYYY-MM-DD') ||
 				thirtyDaysAgo.format('YYYY-MM-DD')
 			const toDate =
-				selectDateRangeTopChecks?.[1]?.format('YYYY-MM-DD') ||
+				selectDateRangeTopBalance?.[1]?.format('YYYY-MM-DD') ||
 				today.format('YYYY-MM-DD')
 			const res = await api.get(
-				`/stats/top-checks?fromDate=${fromDate}&toDate=${toDate}&page=${page}&limit=10`
+				`/stats/top-balance?fromDate=${fromDate}&toDate=${toDate}&page=${page}&limit=10`
 			)
 			return res.data
 		} catch (error) {
@@ -30,8 +30,8 @@ const useTopChecks = () => {
 	}
 
 	const { data, isLoading } = useQuery({
-		queryKey: ['topChecksData', selectDateRangeTopChecks, page],
-		queryFn: getTopChecks,
+		queryKey: ['topBalanceData', selectDateRangeTopBalance, page],
+		queryFn: getTopBalance,
 		retry: false,
 		refetchOnWindowFocus: false,
 		staleTime: 60000,
@@ -40,10 +40,10 @@ const useTopChecks = () => {
 	return {
 		data,
 		isLoading,
-		selectDateRangeTopChecks,
-		setSelectDateRangeTopChecks,
+		selectDateRangeTopBalance,
+		setSelectDateRangeTopBalance,
 		page,
 		setPage,
 	}
 }
-export default useTopChecks
+export default useTopBalance
