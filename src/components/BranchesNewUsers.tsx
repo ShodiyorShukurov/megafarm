@@ -1,4 +1,4 @@
-import { Button, Select, Space, Tabs, TabsProps } from 'antd'
+import { Button, Select, Space } from 'antd'
 import { ApexOptions } from 'apexcharts'
 import React, { useEffect, useMemo, useState } from 'react'
 import ReactApexChart from 'react-apexcharts'
@@ -99,58 +99,6 @@ const BranchesNewUsers: React.FC<Props> = ({
 		}
 	}, [monthKeys, fromYear])
 
-	// Format month display
-	const formatMonthLabel = (key: string) => {
-		const [year, month] = key.split('-')
-		const months = [
-			'Yanvar',
-			'Fevral',
-			'Mart',
-			'Aprel',
-			'May',
-			'Iyun',
-			'Iyul',
-			'Avgust',
-			'Sentabr',
-			'Oktabr',
-			'Noyabr',
-			'Dekabr',
-		]
-		return `${months[parseInt(month) - 1]} ${year}`
-	}
-
-	// Generate all months between from and to
-	const filteredMonthKeys = useMemo(() => {
-		if (!fromYear || !fromMonth || !toYear || !toMonth) return []
-
-		const from = new Date(`${fromYear}-${fromMonth}-01`)
-		const to = new Date(`${toYear}-${toMonth}-01`)
-
-		if (from > to) return []
-
-		const result: string[] = []
-		const current = new Date(from)
-		while (current <= to) {
-			const year = current.getFullYear()
-			const month = String(current.getMonth() + 1).padStart(2, '0')
-			const key = `${year}-${month}`
-			if (monthlyData[key]) {
-				result.push(key)
-			}
-			current.setMonth(current.getMonth() + 1)
-		}
-		return result
-	}, [fromYear, fromMonth, toYear, toMonth, monthlyData])
-
-	// Create tab content for each month in range
-	const tabItems: TabsProps['items'] = useMemo(() => {
-		return filteredMonthKeys.map(monthKey => ({
-			key: monthKey,
-			label: formatMonthLabel(monthKey),
-			children: <MonthlyTab data={monthlyData[monthKey] || []} />,
-		}))
-	}, [filteredMonthKeys, monthlyData])
-
 	const handleApplyRange = () => {
 		if (
 			fromYear &&
@@ -164,6 +112,24 @@ const BranchesNewUsers: React.FC<Props> = ({
 			setSelectDateRangeBranchesNewUsers(fromStr, toStr)
 		}
 	}
+
+	// Build stacked chart data from all available months
+	const allMonthKeys = useMemo(() => {
+		return Object.keys(monthlyData)
+			.filter(key => /^\d{4}-\d{2}$/.test(key))
+			.sort()
+	}, [monthlyData])
+
+	// Get all unique branch names
+	const allBranches = useMemo(() => {
+		const branchSet = new Set<string>()
+		allMonthKeys.forEach(monthKey => {
+			monthlyData[monthKey]?.forEach(item => {
+				branchSet.add((item.branch_name || 'Unknown').trim())
+			})
+		})
+		return Array.from(branchSet)
+	}, [allMonthKeys, monthlyData])
 
 	if (!monthKeys.length) {
 		return (
@@ -315,9 +281,13 @@ const BranchesNewUsers: React.FC<Props> = ({
 				</Button>
 			</div>
 
-			{/* Tabs */}
-			{filteredMonthKeys.length > 0 ? (
-				<Tabs items={tabItems} defaultActiveKey={filteredMonthKeys[0]} />
+			{/* Chart */}
+			{allMonthKeys.length > 0 ? (
+				<MonthlyTab
+					allMonthKeys={allMonthKeys}
+					allBranches={allBranches}
+					monthlyData={monthlyData}
+				/>
 			) : (
 				<div style={{ textAlign: 'center', padding: 20, color: '#595959' }}>
 					Tanlangan sana uchun ma'lumot yo'q.
@@ -327,75 +297,113 @@ const BranchesNewUsers: React.FC<Props> = ({
 	)
 }
 
-// Monthly Tab Component
+// Monthly Tab Component - Stacked Chart by Months
 type MonthlyTabProps = {
-	data: BranchNewUsers[]
+	allMonthKeys: string[]
+	allBranches: string[]
+	monthlyData: MonthlyData
 }
 
-const MonthlyTab: React.FC<MonthlyTabProps> = ({ data }) => {
-	const formatted = useMemo(() => {
-		return data.map(item => ({
-			name: (item.branch_name || 'Unknown').trim(),
-			count: Number(item.new_users_count ?? 0) || 0,
-		}))
-	}, [data])
+const MonthlyTab: React.FC<MonthlyTabProps> = ({
+	allMonthKeys,
+	allBranches,
+	monthlyData,
+}) => {
+	// Colors for branches
+	const branchColors = useMemo(() => {
+		const colors = [
+			'#FF6B6B',
+			'#4ECDC4',
+			'#45B7D1',
+			'#FFA07A',
+			'#98D8C8',
+			'#F7DC6F',
+			'#BB8FCE',
+		]
+		const colorMap: Record<string, string> = {}
+		allBranches.forEach((branch, idx) => {
+			colorMap[branch] = colors[idx % colors.length]
+		})
+		return colorMap
+	}, [allBranches])
 
-	const total = useMemo(() => {
-		return formatted.reduce((sum, f) => sum + f.count, 0)
-	}, [formatted])
+	// Format month name
+	const formatMonthLabel = (key: string) => {
+		const [year, month] = key.split('-')
+		const months = [
+			'Yanvar',
+			'Fevral',
+			'Mart',
+			'Aprel',
+			'May',
+			'Iyun',
+			'Iyul',
+			'Avgust',
+			'Sentabr',
+			'Oktabr',
+			'Noyabr',
+			'Dekabr',
+		]
+		return `${months[parseInt(month) - 1]} ${year}`
+	}
 
-	const [series, setSeries] = useState<{ name: string; data: number[] }[]>([
-		{ name: 'Yangi foydalanuvchilar', data: [] },
-	])
-
+	// Build series data for chart
+	const [series, setSeries] = useState<{ name: string; data: number[] }[]>([])
 	const [options, setOptions] = useState<ApexOptions>({
-		chart: { type: 'bar', height: 350 },
-		title: {
-			text: "Filiallar bo'yicha yangi foydalanuvchilar",
-			align: 'left',
-			style: { fontSize: '14px' },
-		},
+		chart: { type: 'bar', stacked: false, height: 400 },
 		plotOptions: {
-			bar: { horizontal: false, columnWidth: '55%', borderRadius: 6 },
+			bar: {
+				horizontal: false,
+				columnWidth: '60%',
+				dataLabels: { position: 'top' },
+			},
 		},
-		dataLabels: { enabled: false },
-		stroke: { show: true, width: 2, colors: ['transparent'] },
-		xaxis: { categories: [], labels: { rotate: -45, rotateAlways: true } },
+		xaxis: { categories: [] },
 		yaxis: {
 			labels: { formatter: (val: number) => Math.round(val).toLocaleString() },
 		},
+		dataLabels: { enabled: false },
 		fill: { opacity: 1 },
-		colors: ['#5C7CFA'],
+		stroke: { show: false },
+		legend: { position: 'top', horizontalAlign: 'left' },
 		tooltip: {
 			y: {
 				formatter: (val: number) =>
-					`${Math.round(val).toLocaleString()} foydalanuvchi`,
+					`${Math.round(val).toLocaleString()} yangi foydalanuvchi`,
 			},
 		},
-		legend: { position: 'top', horizontalAlign: 'left' },
 	})
 
 	useEffect(() => {
-		if (!formatted.length) {
-			setSeries([{ name: 'Yangi foydalanuvchilar', data: [] }])
-			setOptions(prev => ({
-				...prev,
-				xaxis: { ...(prev.xaxis as object), categories: [] },
-			}))
-			return
-		}
+		// Build series for each branch with months as X-axis categories
+		const newSeries = allBranches.map(branch => {
+			const data = allMonthKeys.map(monthKey => {
+				const monthData = monthlyData[monthKey] || []
+				const branchData = monthData.find(
+					item => (item.branch_name || 'Unknown').trim() === branch
+				)
+				return Number(branchData?.new_users_count ?? 0) || 0
+			})
+			return {
+				name: branch,
+				data,
+			}
+		})
 
-		const categories = formatted.map(f => f.name)
-		const counts = formatted.map(f => f.count)
+		setSeries(newSeries)
 
-		setSeries([{ name: 'Yangi foydalanuvchilar', data: counts }])
+		// Update options with month labels and colors
+		const colors = allBranches.map(branch => branchColors[branch])
+		const categories = allMonthKeys.map(formatMonthLabel)
+
 		setOptions(prev => ({
 			...prev,
 			xaxis: { ...(prev.xaxis as object), categories },
+			colors,
 		}))
-	}, [formatted])
+	}, [allMonthKeys, allBranches, monthlyData, branchColors])
 
-	if (!formatted.length) {
+	if (!allMonthKeys.length || !allBranches.length) {
 		return (
 			<div style={{ textAlign: 'center', padding: 20, color: '#595959' }}>
 				Hech qanday ma'lumot yo'q.
@@ -405,25 +413,6 @@ const MonthlyTab: React.FC<MonthlyTabProps> = ({ data }) => {
 
 	return (
 		<div style={{ width: '100%', marginTop: 12 }}>
-			{/* Summary Card */}
-			<div
-				style={{
-					background: '#fff',
-					padding: 12,
-					borderRadius: 8,
-					marginBottom: 12,
-					boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
-				}}
-			>
-				<div style={{ fontSize: 12, color: '#777' }}>
-					Jami yangi foydalanuvchilar
-				</div>
-				<div style={{ fontSize: 22, fontWeight: 600 }}>
-					{total.toLocaleString()}
-				</div>
-			</div>
-
-			{/* Chart */}
 			<div
 				style={{
 					background: '#fff',
@@ -436,7 +425,7 @@ const MonthlyTab: React.FC<MonthlyTabProps> = ({ data }) => {
 					options={options}
 					series={series}
 					type='bar'
-					height={350}
+					height={400}
 				/>
 			</div>
 		</div>

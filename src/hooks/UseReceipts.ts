@@ -15,9 +15,10 @@ const UseReceipts = () => {
   const [data, setData] = useState<ReceiptsData>({ data: [], count: 0 });
   const [searchUserId, setSearchUserId] = useState('');
   const [receiptNo, setReceiptNo] = useState('');
+  const [limit, setLimit] = useState(10);
 
   const { isLoading, error, refetch } = useQuery({
-    queryKey: ['receiptsData', currentPage],
+    queryKey: ['receiptsData', currentPage, limit],
     enabled: !!currentPage,
     queryFn: async () => {
       const res = await getReceiptsData();
@@ -38,7 +39,7 @@ const UseReceipts = () => {
 
   const getReceiptsData = async () => {
     try {
-      const res = await api.get(`/receipts/list?limit=10&page=${currentPage}`);
+      const res = await api.get(`/receipts/list?limit=${limit}&page=${currentPage}`);
       return res.data.status === 404 ? { data: [], count: 0 } : res.data;
     } catch (error) {
       console.error('Error fetching receipts data:', error);
@@ -48,7 +49,7 @@ const UseReceipts = () => {
 
   const handleSearch = async () => {
     try {
-      let query = `/receipts/list?limit=10&page=${currentPage}`;
+      let query = `/receipts/list?limit=${limit}&page=${currentPage}`;
 
       if (searchUserId.trim().length >= 4) {
         query += `&user_id=${searchUserId.trim()}`;
@@ -88,6 +89,8 @@ const UseReceipts = () => {
     receiptNo,
     setReceiptNo,
     refetch,
+    limit,
+    setLimit,
   };
 };
 

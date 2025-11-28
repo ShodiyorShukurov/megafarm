@@ -11,6 +11,7 @@ const useTopChecks = () => {
 		[Dayjs, Dayjs] | null
 	>([thirtyDaysAgo, today])
 	const [page, setPage] = useState<number>(1)
+	const [limit, setLimit] = useState<number>(10)
 
 	const getTopChecks = async () => {
 		try {
@@ -21,7 +22,7 @@ const useTopChecks = () => {
 				selectDateRangeTopChecks?.[1]?.format('YYYY-MM-DD') ||
 				today.format('YYYY-MM-DD')
 			const res = await api.get(
-				`/stats/top-checks?fromDate=${fromDate}&toDate=${toDate}&page=${page}&limit=10`
+				`/stats/top-checks?fromDate=${fromDate}&toDate=${toDate}&page=${page}&limit=${limit}`
 			)
 			return res.data
 		} catch (error) {
@@ -30,7 +31,7 @@ const useTopChecks = () => {
 	}
 
 	const { data, isLoading } = useQuery({
-		queryKey: ['topChecksData', selectDateRangeTopChecks, page],
+		queryKey: ['topChecksData', selectDateRangeTopChecks, page, limit],
 		queryFn: getTopChecks,
 		retry: false,
 		refetchOnWindowFocus: false,
@@ -44,6 +45,8 @@ const useTopChecks = () => {
 		setSelectDateRangeTopChecks,
 		page,
 		setPage,
+		limit,
+		setLimit,
 	}
 }
 export default useTopChecks

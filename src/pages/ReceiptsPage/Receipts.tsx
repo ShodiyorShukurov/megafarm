@@ -21,7 +21,9 @@ const Receipts = () => {
     refetch,
     receiptNo,
     setReceiptNo,
-    handleSearch
+    handleSearch,
+    limit,
+    setLimit,
   } = UseReceipts();
 
  
@@ -104,6 +106,8 @@ const Receipts = () => {
         handleViewDetails={handleViewDetails}
         setCurrentPage={setCurrentPage}
         currentPage={currentPage}
+        limit={limit}
+        setLimit={setLimit}
       />
 
       <MoreInfo

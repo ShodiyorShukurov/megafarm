@@ -9,6 +9,8 @@ interface ReceiptsDataProps {
   count: number;
   currentPage: number;
   setCurrentPage: (page: number) => void; 
+  limit: number;
+  setLimit: (limit: number) => void;
 }
 
 const BonunesData: React.FC<ReceiptsDataProps> = ({
@@ -17,7 +19,10 @@ const BonunesData: React.FC<ReceiptsDataProps> = ({
   count,
   currentPage,
   setCurrentPage,
+  limit,
+  setLimit,
 }) => {
+  console.log(count);
   const columns: ColumnsType<IBonunes> = [
     {
       title: 'ID',
@@ -82,9 +87,11 @@ const BonunesData: React.FC<ReceiptsDataProps> = ({
         rowKey="id"
         pagination={{
           total: count,
-          pageSize: 10,
+          pageSize: limit,
           current: currentPage,
           onChange: (page) => setCurrentPage(page),
+          onShowSizeChange: (_, size) => setLimit(size),
+          showSizeChanger: true,
         }}
         scroll={{ x: 1000 }}
         className="shadow-lg rounded-lg"

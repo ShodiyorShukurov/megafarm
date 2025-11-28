@@ -28,6 +28,8 @@ const Users = () => {
     handleSearch,
     currentPage,
     setCurrentPage,
+    limit,
+    setLimit,
   } = UseUser();
 
   if (isLoading) {
@@ -101,6 +103,8 @@ const Users = () => {
         handleDeleteModal={handleDeleteModal}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
+        limit={limit}
+        setLimit={setLimit}
       />
 
       <UserEditModal

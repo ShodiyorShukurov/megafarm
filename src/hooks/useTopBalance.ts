@@ -11,6 +11,7 @@ const useTopBalance = () => {
 		[Dayjs, Dayjs] | null
 	>([thirtyDaysAgo, today])
 	const [page, setPage] = useState<number>(1)
+	const [limit, setLimit] = useState<number>(10)
 
 	const getTopBalance = async () => {
 		try {
@@ -21,7 +22,7 @@ const useTopBalance = () => {
 				selectDateRangeTopBalance?.[1]?.format('YYYY-MM-DD') ||
 				today.format('YYYY-MM-DD')
 			const res = await api.get(
-				`/stats/top-balance?fromDate=${fromDate}&toDate=${toDate}&page=${page}&limit=10`
+				`/stats/top-balance?fromDate=${fromDate}&toDate=${toDate}&page=${page}&limit=${limit}`
 			)
 			return res.data
 		} catch (error) {
@@ -30,7 +31,7 @@ const useTopBalance = () => {
 	}
 
 	const { data, isLoading } = useQuery({
-		queryKey: ['topBalanceData', selectDateRangeTopBalance, page],
+		queryKey: ['topBalanceData', selectDateRangeTopBalance, page, limit],
 		queryFn: getTopBalance,
 		retry: false,
 		refetchOnWindowFocus: false,
@@ -44,6 +45,8 @@ const useTopBalance = () => {
 		setSelectDateRangeTopBalance,
 		page,
 		setPage,
+		limit,
+		setLimit,
 	}
 }
 export default useTopBalance

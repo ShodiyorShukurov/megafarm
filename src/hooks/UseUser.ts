@@ -24,9 +24,10 @@ const UseUser = () => {
   const [searchPhone, setSearchPhone] = React.useState('');
   const [data, setData] = React.useState<UserData>({ data: [], count: 0 });
   const [currentPage, setCurrentPage] = React.useState(1);
+  const [limit, setLimit] = React.useState(10);
 
   const { isLoading, error, refetch } = useQuery({
-    queryKey: ['userData', currentPage],
+    queryKey: ['userData', currentPage, limit],
     enabled: !!currentPage,
     queryFn: async () => {
       const res = await getUserData();
@@ -37,7 +38,7 @@ const UseUser = () => {
 
   const getUserData = async () => {
     try {
-      const res = await api.get(`/users/list?limit=10&page=${currentPage}`);
+      const res = await api.get(`/users/list?limit=${limit}&page=${currentPage}`);
       return res.status === 404 ? [] : res.data;
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -54,7 +55,7 @@ const UseUser = () => {
 
     try {
       const res = await api.get(
-        `/users/list?limit=10&page=${currentPage}&phone=${searchPhone}`
+        `/users/list?limit=${limit}&page=${currentPage}&phone=${searchPhone}`
       );
       setData(res.data);
     } catch (error) {
@@ -121,6 +122,8 @@ const UseUser = () => {
     refetch,
     currentPage,
     setCurrentPage,
+    limit,
+    setLimit,
   };
 };
 

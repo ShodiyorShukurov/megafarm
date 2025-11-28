@@ -28,6 +28,8 @@ interface TopBalanceUserDataProps {
 	page: number
 	setPage: (page: number) => void
 	count: number
+	limit: number
+	setLimit: (limit: number) => void
 }
 
 const fetchUserBalanceDetails = async (userId: string, page: number = 1) => {
@@ -44,6 +46,8 @@ const TopBalanceUserData: React.FC<TopBalanceUserDataProps> = ({
 	page,
 	setPage,
 	count,
+	limit,
+	setLimit,
 }) => {
 	const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
 	const [isModalOpen, setIsModalOpen] = useState(false)
@@ -55,6 +59,14 @@ const TopBalanceUserData: React.FC<TopBalanceUserDataProps> = ({
 		enabled: !!selectedUserId,
 	})
 	const columns: ColumnsType<ITopBalanceUser> = [
+		{
+			title:"№",
+			dataIndex: 'user_id',
+			key: 'user_id',
+			align: 'center',
+			width: 80,
+			render: (_, __ , index: number) => (page - 1) * limit + index + 1,
+		},
 		{
 			title: 'ID',
 			dataIndex: 'user_id',
@@ -142,9 +154,11 @@ const TopBalanceUserData: React.FC<TopBalanceUserDataProps> = ({
 						: []
 				}
 				pagination={{
-					pageSize: 10,
+					pageSize: limit,
 					current: page,
 					onChange: newPage => setPage(newPage),
+					onShowSizeChange: (_, size) => setLimit(size),
+					showSizeChanger: true,
 					total: count,
 				}}
 				scroll={{ x: 1000 }}

@@ -16,6 +16,8 @@ interface UserDataProps {
   handleDeleteModal: (id: number | null) => void;
   setCurrentPage: (page: number) => void;
   currentPage: number;
+  limit: number;
+  setLimit: (limit: number) => void;
 }
 
 const UserData: React.FC<UserDataProps> = ({
@@ -25,7 +27,8 @@ const UserData: React.FC<UserDataProps> = ({
   handleDeleteModal,
   setCurrentPage,
   currentPage,
-  count
+  count,
+  limit, setLimit,
 }) => {
   const columns: ColumnsType<IUser> = [
     {
@@ -125,11 +128,13 @@ const UserData: React.FC<UserDataProps> = ({
         rowKey="id"
         pagination={{
           current: currentPage,
-          pageSize: 10,
+          pageSize: limit,
           total: count,
           onChange: (page) => setCurrentPage(page),
+          onShowSizeChange: (_, size) => setLimit(size),
+          showSizeChanger: true,
         }}
-        scroll={{ x: 1200 }}
+        scroll={{ x: true }}
         className="shadow-lg rounded-lg"
       />
     </div>

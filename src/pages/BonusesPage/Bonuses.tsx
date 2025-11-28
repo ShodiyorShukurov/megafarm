@@ -22,6 +22,8 @@ const Bonuses = () => {
     setReceiptNo,
     refetch,
     handleSearch,
+    limit,
+    setLimit,
   } = UseBonuses();
 
   if (isLoading) {
@@ -97,10 +99,12 @@ const Bonuses = () => {
       </div>
       <BonusesData
         data={data.data}
-        count={data.count}
+        count={data.total}
         setCurrentPage={setCurrentPage}
         currentPage={currentPage}
         handleViewDetails={handleViewDetails}
+        limit={limit}
+        setLimit={setLimit}
       />
       <MoreInfo
         isModalOpen={isModalOpen}

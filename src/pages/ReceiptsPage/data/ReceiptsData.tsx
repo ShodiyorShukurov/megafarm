@@ -9,6 +9,8 @@ interface ReceiptsDataProps {
   count: number;
   setCurrentPage: (page: number) => void;
   currentPage: number;  
+  limit: number;
+  setLimit: (limit: number) => void;
 }
 
 const ReceiptsData: React.FC<ReceiptsDataProps> = ({
@@ -16,7 +18,9 @@ const ReceiptsData: React.FC<ReceiptsDataProps> = ({
   data,
   setCurrentPage,
   currentPage,
-  count
+  count,
+  limit,
+  setLimit,
 }) => {
 
   const columns: ColumnsType<IReceipt> = [
@@ -91,9 +95,11 @@ const ReceiptsData: React.FC<ReceiptsDataProps> = ({
         rowKey="id"
         pagination={{
           current: currentPage,
-          pageSize: 10,
+          pageSize: limit,
           total: count,
           onChange: (page) => setCurrentPage(page),
+          onShowSizeChange: (_, size) => setLimit(size),
+          showSizeChanger: true,
         }}
         scroll={{ x: true }}
         className="shadow-lg rounded-lg"

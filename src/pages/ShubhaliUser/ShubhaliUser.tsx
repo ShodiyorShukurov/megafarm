@@ -13,6 +13,8 @@ const ShubhaliUser = () => {
 		setSelectDateRangeTopChecks,
 		page,
 		setPage,
+		limit,
+		setLimit,
 	} = useTopChecks()
 
 	const {
@@ -21,6 +23,8 @@ const ShubhaliUser = () => {
 		setSelectDateRangeTopBalance,
 		page: balancePage,
 		setPage: setBalancePage,
+		limit: balanceLimit,
+		setLimit: setBalanceLimit,
 	} = useTopBalance()
 
 	const {
@@ -29,6 +33,8 @@ const ShubhaliUser = () => {
 		setSelectDateRangeTopBonus,
 		page: bonusPage,
 		setPage: setBonusPage,
+		limit: bonusLimit,
+		setLimit: setBonusLimit,
 	} = useTopBonus()
 
 	return (
@@ -40,6 +46,8 @@ const ShubhaliUser = () => {
 				setSelectDateRangeTopChecks={setSelectDateRangeTopChecks}
 				page={page}
 				setPage={setPage}
+				limit={limit}
+				setLimit={setLimit}
 			/>
 
 			<TopBalanceUserData
@@ -49,6 +57,8 @@ const ShubhaliUser = () => {
 				setSelectDateRangeTopBalance={setSelectDateRangeTopBalance}
 				page={balancePage}
 				setPage={setBalancePage}
+				limit={balanceLimit}
+				setLimit={setBalanceLimit}
 			/>
 
 			<TopBonusUserData
@@ -58,6 +68,8 @@ const ShubhaliUser = () => {
 				setSelectDateRangeTopBonus={setSelectDateRangeTopBonus}
 				page={bonusPage}
 				setPage={setBonusPage}
+				limit={bonusLimit}
+				setLimit={setBonusLimit}
 			/>
 		</Admin>
 	)

@@ -30,6 +30,8 @@ interface TopBonusUserDataProps {
 	page: number
 	setPage: (page: number) => void
 	count: number
+	limit: number
+	setLimit: (limit: number) => void
 }
 
 const fetchUserBonusDetails = async (userId: string, page: number = 1) => {
@@ -44,6 +46,8 @@ const TopBonusUserData: React.FC<TopBonusUserDataProps> = ({
 	page,
 	setPage,
 	count,
+	limit,
+	setLimit,
 }) => {
 	const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
 	const [isModalOpen, setIsModalOpen] = useState(false)
@@ -55,6 +59,14 @@ const TopBonusUserData: React.FC<TopBonusUserDataProps> = ({
 		enabled: !!selectedUserId,
 	})
 	const columns: ColumnsType<ITopBonusUser> = [
+		{
+			title: '№',
+			dataIndex: 'user_id',
+			key: 'user_id',
+			align: 'center',
+			width: 80,
+			render: (_, __, index: number) => (page - 1) * limit + index + 1,
+		},
 		{
 			title: 'ID',
 			dataIndex: 'user_id',
@@ -162,10 +174,12 @@ const TopBonusUserData: React.FC<TopBonusUserDataProps> = ({
 						: []
 				}
 				pagination={{
-					pageSize: 10,
+					pageSize: limit,
 					current: page,
 					onChange: newPage => setPage(newPage),
 					total: count,
+					onShowSizeChange: (_, size) => setLimit(size),
+					showSizeChanger: true,
 				}}
 				scroll={{ x: 1200 }}
 				className='shadow-lg rounded-lg'
