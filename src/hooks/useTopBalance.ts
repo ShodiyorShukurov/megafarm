@@ -12,18 +12,29 @@ const useTopBalance = () => {
 	>([thirtyDaysAgo, today])
 	const [page, setPage] = useState<number>(1)
 	const [limit, setLimit] = useState<number>(10)
+	const [userId, setUserId] = useState<string | null>(null)
+	const [phoneNumber, setPhoneNumber] = useState<string | null>(null)
 
 	const getTopBalance = async () => {
 		try {
+			let query = `/stats/top-balance?page=${page}&limit=${limit}`
+
 			const fromDate =
 				selectDateRangeTopBalance?.[0]?.format('YYYY-MM-DD') ||
 				thirtyDaysAgo.format('YYYY-MM-DD')
 			const toDate =
 				selectDateRangeTopBalance?.[1]?.format('YYYY-MM-DD') ||
 				today.format('YYYY-MM-DD')
-			const res = await api.get(
-				`/stats/top-balance?fromDate=${fromDate}&toDate=${toDate}&page=${page}&limit=${limit}`
-			)
+
+			if (userId) {
+				query = `/stats/top-balance?&user_id=${userId}`
+			} else if (phoneNumber) {
+				query = `/stats/top-balance?&phone_number=${phoneNumber}`
+			} else {
+				query += `&from=${fromDate}&to=${toDate}`
+			}
+
+			const res = await api.get(query)
 			return res.data
 		} catch (error) {
 			console.log(error)
@@ -31,7 +42,7 @@ const useTopBalance = () => {
 	}
 
 	const { data, isLoading } = useQuery({
-		queryKey: ['topBalanceData', selectDateRangeTopBalance, page, limit],
+		queryKey: ['topBalanceData', selectDateRangeTopBalance, page, limit, userId, phoneNumber],
 		queryFn: getTopBalance,
 		retry: false,
 		refetchOnWindowFocus: false,
@@ -47,6 +58,10 @@ const useTopBalance = () => {
 		setPage,
 		limit,
 		setLimit,
+		userId,
+		setUserId,
+		phoneNumber,
+		setPhoneNumber,
 	}
 }
 export default useTopBalance

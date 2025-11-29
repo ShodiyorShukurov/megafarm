@@ -1,6 +1,6 @@
 import { InfoCircleOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
-import { Button, DatePicker, Empty, Modal, Spin, Table, Tag } from 'antd'
+import { Button, DatePicker, Empty, Input, Modal, Spin, Table, Tag } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { Dayjs } from 'dayjs'
 import { useState } from 'react'
@@ -30,6 +30,10 @@ interface TopBalanceUserDataProps {
 	count: number
 	limit: number
 	setLimit: (limit: number) => void
+	userId: string | null
+	setUserId: (userId: string | null) => void
+	phoneNumber: string | null
+	setPhoneNumber: (phoneNumber: string | null) => void
 }
 
 const fetchUserBalanceDetails = async (userId: string, page: number = 1) => {
@@ -48,6 +52,10 @@ const TopBalanceUserData: React.FC<TopBalanceUserDataProps> = ({
 	count,
 	limit,
 	setLimit,
+	userId,
+	setUserId,
+	phoneNumber,
+	setPhoneNumber,
 }) => {
 	const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
 	const [isModalOpen, setIsModalOpen] = useState(false)
@@ -60,12 +68,12 @@ const TopBalanceUserData: React.FC<TopBalanceUserDataProps> = ({
 	})
 	const columns: ColumnsType<ITopBalanceUser> = [
 		{
-			title:"№",
+			title: '№',
 			dataIndex: 'user_id',
 			key: 'user_id',
 			align: 'center',
 			width: 80,
-			render: (_, __ , index: number) => (page - 1) * limit + index + 1,
+			render: (_, __, index: number) => (page - 1) * limit + index + 1,
 		},
 		{
 			title: 'ID',
@@ -127,7 +135,7 @@ const TopBalanceUserData: React.FC<TopBalanceUserDataProps> = ({
 			<h2 className='text-2xl font-semibold mb-4'>
 				Eng yuqori balansli foydalanuvchilar
 			</h2>
-			<div className='mb-6 p-4 bg-white rounded-lg shadow-sm w-[400px]'>
+			<div className='mb-6 p-4 bg-white rounded-lg shadow-sm flex items-center gap-4'>
 				<DatePicker.RangePicker
 					value={selectDateRangeTopBalance}
 					onChange={dates => {
@@ -140,6 +148,22 @@ const TopBalanceUserData: React.FC<TopBalanceUserDataProps> = ({
 					format='YYYY-MM-DD'
 					placeholder={["Boshlang'ich sana", 'Tugash sanasi']}
 					className='w-full'
+				/>
+
+				<Input
+					placeholder='Foydalanuvchi ID sini kiriting'
+					value={userId || ''}
+					onChange={e => setUserId(e.target.value || null)}
+					allowClear
+					className='w-[400px]'
+				/>
+
+				<Input
+					placeholder='Telefon raqamni kiriting'
+					value={phoneNumber || ''}
+					onChange={e => setPhoneNumber(e.target.value || null)}
+					allowClear
+					className='w-[400px]'
 				/>
 			</div>
 
@@ -192,7 +216,7 @@ const TopBalanceUserData: React.FC<TopBalanceUserDataProps> = ({
 									width: 80,
 								},
 								{
-									title: 'Receipt No',
+									title: 'Kvitansiya raqami',
 									dataIndex: 'receipt_no',
 									key: 'receipt_no',
 									width: 100,
@@ -211,12 +235,12 @@ const TopBalanceUserData: React.FC<TopBalanceUserDataProps> = ({
 										parseFloat(a.amount) - parseFloat(b.amount),
 								},
 								{
-									title: 'Income',
+									title: 'Daromad',
 									dataIndex: 'income',
 									key: 'income',
 									render: (value: boolean) => (
 										<Tag color={value ? 'green' : 'red'}>
-											{value ? 'Yes' : 'No'}
+											{value ? 'Ha' : 'Yo\'q'}
 										</Tag>
 									),
 									width: 100,

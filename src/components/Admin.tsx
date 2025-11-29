@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
 import {
+	LogoutOutlined,
 	MenuFoldOutlined,
 	MenuUnfoldOutlined,
 	UserOutlined,
-	LogoutOutlined,
 } from '@ant-design/icons'
 import { Avatar, Button, Dropdown, Layout, Menu, theme } from 'antd'
+import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 const { Header, Sider, Content } = Layout
@@ -195,7 +195,7 @@ const Admin: React.FC<AdminProps> = ({ children }) => {
 							items: [
 								{
 									key: '0',
-									label: "Admin's Profile",
+									label: 'Adminning profili',
 								},
 								{
 									type: 'divider',

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import api from '../api'
 import { useQuery } from '@tanstack/react-query'
-import { message } from 'antd'
+
 
 const UseBonuses = () => {
 	interface BonusData {
@@ -18,7 +18,7 @@ const UseBonuses = () => {
 	const [limit, setLimit] = useState(10)
 
 	const { isLoading, error, refetch } = useQuery({
-		queryKey: ['branchesData', currentPage, limit],
+		queryKey: ['branchesData', currentPage, limit, searchUserId, receiptNo],
 		enabled: !!currentPage,
 		queryFn: async () => {
 			const res = await getBonusesData()
@@ -39,42 +39,26 @@ const UseBonuses = () => {
 
 	const getBonusesData = async () => {
 		try {
-			const res = await api.get(
-				`/bonuses/list?limit=${limit}&page=${currentPage}`
-			)
+
+			let query = `/bonuses/list?limit=${limit}&page=${currentPage}`
+			if (searchUserId && receiptNo) {
+				query += `&user_id=${searchUserId.trim()}&receipt_no=${receiptNo.trim()}`
+			} else if (searchUserId) {
+				query += `&user_id=${searchUserId.trim()}`
+			} else if (receiptNo.trim().length >= 1) {
+				query += `&receipt_no=${receiptNo.trim()}`
+			}
+
+			const res = await api.get(query)
 
 			return res.data
 		} catch (error) {
 			console.error('Error fetching user data:', error)
-			throw new Error('Failed to fetch user data')
+			return { data: [], total: 0 }
 		}
 	}
 
-	const handleSearch = async () => {
-		try {
-			let query = `/bonuses/list?limit=${limit}&page=${currentPage}`
 
-			if (searchUserId.trim().length >= 4) {
-				query += `&user_id=${searchUserId.trim()}`
-			} else if (receiptNo.trim().length >= 1) {
-				query += `&receipt_no=${receiptNo.trim()}`
-			} else {
-				const res = await getBonusesData()
-				setData(res)
-				return
-			}
-
-			const res = await api.get(query)
-			setData(res.data)
-		} catch (error) {
-			if ((error as any)?.response?.status === 404) {
-				setData({ data: [], total: 0 })
-			} else {
-				console.error('Search error:', error)
-				message.error('Qidiruvda xatolik yuz berdi')
-			}
-		}
-	}
 
 	return {
 		isModalOpen,
@@ -91,7 +75,6 @@ const UseBonuses = () => {
 		receiptNo,
 		setReceiptNo,
 		refetch,
-		handleSearch,
     limit,
     setLimit,
 	}

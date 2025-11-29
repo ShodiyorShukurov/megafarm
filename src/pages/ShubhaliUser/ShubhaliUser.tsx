@@ -15,6 +15,10 @@ const ShubhaliUser = () => {
 		setPage,
 		limit,
 		setLimit,
+		userId,
+		setUserId,
+		phoneNumber,
+		setPhoneNumber,
 	} = useTopChecks()
 
 	const {
@@ -25,6 +29,10 @@ const ShubhaliUser = () => {
 		setPage: setBalancePage,
 		limit: balanceLimit,
 		setLimit: setBalanceLimit,
+		userId: balanceUserId,
+		setUserId: setBalanceUserId,
+		phoneNumber: balancePhoneNumber,
+		setPhoneNumber: setBalancePhoneNumber,
 	} = useTopBalance()
 
 	const {
@@ -35,6 +43,10 @@ const ShubhaliUser = () => {
 		setPage: setBonusPage,
 		limit: bonusLimit,
 		setLimit: setBonusLimit,
+		userId: bonusUserId,
+		setUserId: setBonusUserId,
+		phoneNumber: bonusPhoneNumber,
+		setPhoneNumber: setBonusPhoneNumber,
 	} = useTopBonus()
 
 	return (
@@ -48,6 +60,10 @@ const ShubhaliUser = () => {
 				setPage={setPage}
 				limit={limit}
 				setLimit={setLimit}
+				userId={userId}
+				setUserId={setUserId}
+				phoneNumber={phoneNumber}
+				setPhoneNumber={setPhoneNumber}
 			/>
 
 			<TopBalanceUserData
@@ -59,6 +75,10 @@ const ShubhaliUser = () => {
 				setPage={setBalancePage}
 				limit={balanceLimit}
 				setLimit={setBalanceLimit}
+				userId={balanceUserId}
+				setUserId={setBalanceUserId}
+				phoneNumber={balancePhoneNumber}
+				setPhoneNumber={setBalancePhoneNumber}
 			/>
 
 			<TopBonusUserData
@@ -70,6 +90,10 @@ const ShubhaliUser = () => {
 				setPage={setBonusPage}
 				limit={bonusLimit}
 				setLimit={setBonusLimit}
+				userId={bonusUserId}
+				setUserId={setBonusUserId}
+				phoneNumber={bonusPhoneNumber}
+				setPhoneNumber={setBonusPhoneNumber}
 			/>
 		</Admin>
 	)

@@ -54,11 +54,11 @@ const MessageModal: React.FC<MessageModalProps> = ({
       const res = await api.post('/message/send', formData);
 
       if (res.data.status === 200) {
-        message.success('Message sent successfully!');
+        message.success('Xabar muvaffaqiyatli yuborildi!');
       } else if (res.data.status === 400) {
-        message.error('Failed to send message!');
+        message.error('Xabarni yuborishda xato!');
       } else if (res.data.status === 500) {
-        message.error('Server error!');
+        message.error('Server xatosi!');
       }
 
       queryClient.invalidateQueries({ queryKey: ['messageData'] });
@@ -66,8 +66,8 @@ const MessageModal: React.FC<MessageModalProps> = ({
       form.resetFields();
       setTextValue('<p></p>'); 
     } catch (error) {
-      console.error('Error sending message:', error);
-      message.error('Failed to send message!');
+      console.error('Xabarini yuborishda xato:', error);
+      message.error('Xabarni yuborishda xato!');
     }
   };
 
@@ -80,20 +80,20 @@ const MessageModal: React.FC<MessageModalProps> = ({
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6 text-center">Messages</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">Xabarlar</h1>
       <Button
         type="primary"
         icon={<PlusCircleOutlined />}
         onClick={() => setIsModalOpen(true)}
         className="mb-4"
       >
-        Send Message
+        Xabar yuborish
       </Button>
       <Modal
         title={
           <div className="flex items-center">
             <PlusCircleOutlined className="text-blue-500 mr-2" />
-            Send Message
+            Xabar yuborish
           </div>
         }
         open={isModalOpen}
@@ -110,14 +110,14 @@ const MessageModal: React.FC<MessageModalProps> = ({
           layout="vertical"
         >
           <Form.Item
-            label="Text"
+            label="Matn"
             name="text"
             className="mb-4"
             style={{ width: '100%' }}
             rules={[
               {
                 required: true,
-                message: 'Please enter text',
+                message: "Iltimos, matnni kiriting",
               },
             ]}
           >
@@ -173,13 +173,13 @@ const MessageModal: React.FC<MessageModalProps> = ({
           </Form.Item>
 
           <Form.Item
-            label="Balance from"
+            label="Balansdan"
             name="balance_from"
             className="mb-4"
             style={{ width: '100%' }}
           >
             <InputNumber
-              placeholder="Balance from"
+              placeholder="Balansdan"
               className="w-full"
               style={{ width: '100%' }}
               min={0}
@@ -187,13 +187,13 @@ const MessageModal: React.FC<MessageModalProps> = ({
           </Form.Item>
 
           <Form.Item
-            label="Balance to"
+            label="Balansgacha"
             name="balance_to"
             className="mb-4"
             style={{ width: '100%' }}
           >
             <InputNumber
-              placeholder="Balance to"
+              placeholder="Balansgacha"
               className="w-full"
               style={{ width: '100%' }}
               min={0}
@@ -201,25 +201,25 @@ const MessageModal: React.FC<MessageModalProps> = ({
           </Form.Item>
 
           <Form.Item
-            label="Bot lang"
+            label="Bot tili"
             name="bot_lang"
             className="mb-4"
             style={{ width: '100%' }}
             rules={[
               {
                 required: true,
-                message: 'Please select bot lang',
+                message: "Iltimos, bot tilini tanlang",
               },
             ]}
           >
-            <Select placeholder="Select bot lang" className="w-full">
-              <Select.Option value="uz">Uzbek</Select.Option>
-              <Select.Option value="ru">Russian</Select.Option>
+            <Select placeholder="Bot tilini tanlang" className="w-full">
+              <Select.Option value="uz">O'zbekcha</Select.Option>
+              <Select.Option value="ru">Ruscha</Select.Option>
             </Select>
           </Form.Item>
 
           <Form.Item
-            label="Image"
+            label="Rasm"
             name="file"
             valuePropName="fileList"
             getValueFromEvent={normFile}
@@ -235,16 +235,16 @@ const MessageModal: React.FC<MessageModalProps> = ({
               style={{ width: '100%' }}
             >
               <Button icon={<UploadOutlined />} block>
-                Upload Image
+                Rasmni yuklash
               </Button>
             </Upload>
           </Form.Item>
 
           <Form.Item className="col-span-2">
             <div className="flex justify-end space-x-2">
-              <Button onClick={() => setIsModalOpen(false)}>Cancel</Button>
+              <Button onClick={() => setIsModalOpen(false)}>Bekor qilish</Button>
               <Button type="primary" htmlType="submit">
-                Save
+                Saqlash
               </Button>
             </div>
           </Form.Item>

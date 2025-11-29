@@ -9,12 +9,12 @@ import {
 } from '@ant-design/icons'
 import { Card, Col, Row, Statistic } from 'antd'
 import BranchCashback from '../../components/BranchCashback'
+import BranchesNewUsers from '../../components/BranchesNewUsers'
 import NewCustomerFlow from '../../components/NewCustomerFlow'
 import useBranchCashback from '../../hooks/useBranchCashback'
+import useBranchesNewUsers from '../../hooks/useBranchesNewUsers'
 import UseDashboard from '../../hooks/UseDashboard'
 import useNewCustomerFlow from '../../hooks/useNewCustomerFlow'
-import BranchesNewUsers from '../../components/BranchesNewUsers'
-import useBranchesNewUsers from '../../hooks/useBranchesNewUsers'
 // import Chart from '../../components/Chart'
 // import ApexChartData from '../../components/ApexChart'
 
@@ -38,8 +38,8 @@ const ApexChart: React.FC = () => {
 	const { data: branchesNewUsersData, setSelectDateRangeBranchesNewUsers } =
 		useBranchesNewUsers()
 
-	if (isLoading) return <Admin>Loading...</Admin>
-	if (error) return <Admin>Error: {error?.message}</Admin>
+	if (isLoading) return <Admin>Yuklanmoqda...</Admin>
+	if (error) return <Admin>Xato: {error?.message}</Admin>
 
 	return (
 		<Admin>

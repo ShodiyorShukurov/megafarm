@@ -12,18 +12,29 @@ const useTopChecks = () => {
 	>([thirtyDaysAgo, today])
 	const [page, setPage] = useState<number>(1)
 	const [limit, setLimit] = useState<number>(10)
+	const [userId, setUserId] = useState<string | null>(null)
+	const [phoneNumber, setPhoneNumber] = useState<string | null>(null)
 
 	const getTopChecks = async () => {
 		try {
+			let query = `/stats/top-checks?page=${page}&limit=${limit}`
 			const fromDate =
 				selectDateRangeTopChecks?.[0]?.format('YYYY-MM-DD') ||
 				thirtyDaysAgo.format('YYYY-MM-DD')
+
 			const toDate =
 				selectDateRangeTopChecks?.[1]?.format('YYYY-MM-DD') ||
 				today.format('YYYY-MM-DD')
-			const res = await api.get(
-				`/stats/top-checks?fromDate=${fromDate}&toDate=${toDate}&page=${page}&limit=${limit}`
-			)
+
+			if (userId) {
+				query = `/stats/top-checks?user_id=${userId}`
+			} else if (phoneNumber) {
+				query = `/stats/top-checks?phone_number=${phoneNumber}`
+			} else {
+				query += `&from=${fromDate}&to=${toDate}`
+			}
+
+			const res = await api.get(query)
 			return res.data
 		} catch (error) {
 			console.log(error)
@@ -31,7 +42,7 @@ const useTopChecks = () => {
 	}
 
 	const { data, isLoading } = useQuery({
-		queryKey: ['topChecksData', selectDateRangeTopChecks, page, limit],
+		queryKey: ['topChecksData', selectDateRangeTopChecks, page, limit, userId, phoneNumber],
 		queryFn: getTopChecks,
 		retry: false,
 		refetchOnWindowFocus: false,
@@ -47,6 +58,10 @@ const useTopChecks = () => {
 		setPage,
 		limit,
 		setLimit,
+		userId,
+		setUserId,
+		phoneNumber,
+		setPhoneNumber,
 	}
 }
 export default useTopChecks
