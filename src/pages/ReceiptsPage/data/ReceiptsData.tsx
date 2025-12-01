@@ -1,7 +1,12 @@
-import { InfoCircleOutlined } from '@ant-design/icons'
-import { Button, Table } from 'antd'
+import {
+	DeleteOutlined,
+	ExclamationCircleOutlined,
+	InfoCircleOutlined,
+} from '@ant-design/icons'
+import { Button, Popconfirm, Table } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { IReceipt } from '../../../types/interface'
+import useDeleteReceipts from '../../../hooks/useDeletReceipts'
 
 interface ReceiptsDataProps {
 	handleViewDetails: (record: string) => void
@@ -24,6 +29,15 @@ const ReceiptsData: React.FC<ReceiptsDataProps> = ({
 	setLimit,
 	isLoading,
 }) => {
+
+	const { mutate: handleDelete } = useDeleteReceipts()
+
+	const handleDeleteModal = (id: number | null) => {
+		if (id !== null) {
+			handleDelete(id)
+		}
+	}
+
 	const columns: ColumnsType<IReceipt> = [
 		{
 			title: '№',
@@ -77,13 +91,28 @@ const ReceiptsData: React.FC<ReceiptsDataProps> = ({
 			key: 'actions',
 			align: 'center',
 			render: (_, record) => (
-				<Button
-					type='primary'
-					icon={<InfoCircleOutlined />}
-					onClick={() => handleViewDetails(record.id)}
-				>
-					Ko'rish
-				</Button>
+				<div className='flex gap-2 justify-center'>
+					<Button
+						type='primary'
+						icon={<InfoCircleOutlined />}
+						onClick={() => handleViewDetails(record.id)}
+					>
+						Ko'rish
+					</Button>
+
+					<Popconfirm
+						title="Ushbu kvitansiyani oʻchirmoqchimisiz?"
+						description='Ushbu amalni qaytarish mumkin emas.'
+						onConfirm={() => handleDeleteModal(Number(record.id))}
+						onCancel={() => handleDeleteModal(null)}
+						okText='Ha'
+						cancelText="Yo'q"
+						placement='topRight'
+						icon={<ExclamationCircleOutlined className='text-red-500' />}
+					>
+						<Button type='primary' danger icon={<DeleteOutlined />} />
+					</Popconfirm>
+				</div>
 			),
 		},
 	]

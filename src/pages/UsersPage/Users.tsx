@@ -23,11 +23,12 @@ const Users = () => {
 		error,
 		searchPhone,
 		setSearchPhone,
-		refetch,
 		currentPage,
 		setCurrentPage,
 		limit,
 		setLimit,
+		userId,
+		setUserId,
 	} = UseUser()
 
 	if (error) {
@@ -46,9 +47,21 @@ const Users = () => {
 						onChange={e => {
 							const value = e.target.value
 							setSearchPhone(value)
-							if (value.trim() === '') {
-								refetch()
-							}
+						}}
+						size='large'
+						allowClear
+						type='text'
+						inputMode='numeric'
+						pattern='\d*'
+					/>
+					<Input
+						className='max-w-xs'
+						placeholder='Foydalanuvchi ID sini kiriting'
+						value={userId !== null ? userId : ''}
+						onChange={e => {
+							const value = e.target.value
+							const numericValue = value === '' ? null : Number(value)
+							setUserId(numericValue)
 						}}
 						size='large'
 						allowClear

@@ -25,9 +25,10 @@ const UseUser = () => {
 	const [data, setData] = React.useState<UserData>({ data: [], count: 0 })
 	const [currentPage, setCurrentPage] = React.useState(1)
 	const [limit, setLimit] = React.useState(10)
+	const [userId, setUserId] = React.useState<number | null>(null)
 
 	const { isLoading, error, refetch } = useQuery({
-		queryKey: ['userData', currentPage, limit, searchPhone],
+		queryKey: ['userData', currentPage, limit, searchPhone, userId],
 		enabled: !!currentPage,
 		queryFn: async () => {
 			const res = await getUserData()
@@ -41,6 +42,9 @@ const UseUser = () => {
 			let query = `/users/list?limit=${limit}&page=${currentPage}`
 			if (searchPhone.trim().length >= 1) {
 				query += `&phone=${searchPhone.trim()}`
+			}
+			if (userId !== null) {
+				query += `&chat_id=${userId}`
 			}
 
 			const res = await api.get(query)
@@ -106,6 +110,8 @@ const UseUser = () => {
 		setCurrentPage,
 		limit,
 		setLimit,
+		userId,
+		setUserId,
 	}
 }
 

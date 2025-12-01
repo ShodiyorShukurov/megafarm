@@ -56,7 +56,7 @@ const Admin: React.FC<AdminProps> = ({ children }) => {
 									/>
 								</svg>
 							),
-							label: 'Dashboard',
+							label: 'Bosh sahifa',
 						},
 						{
 							key: '/shubhali-user',
@@ -70,7 +70,7 @@ const Admin: React.FC<AdminProps> = ({ children }) => {
 									<path d='M10 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM6 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM1.49 15.326a.78.78 0 0 1-.358-.442 3 3 0 0 1 4.308-3.516 6.484 6.484 0 0 0-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 0 1-2.07-.655ZM16.44 15.98a4.97 4.97 0 0 0 2.07-.654.78.78 0 0 0 .357-.442 3 3 0 0 0-4.308-3.517 6.484 6.484 0 0 1 1.907 3.96a2.32 2.32 0 0 1-.026.654ZM18 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM5.304 16.19a.844.844 0 0 1-.277-.71A5 5 0 0 -1 .03l9.947-.001a.843.843, a=>0 0 1-.277.71A6.975 6.975 0 0 1 10 18a6.974 6.974 0 0 1-4.696-1.81Z' />
 								</svg>
 							),
-							label: 'Shubhali User',
+							label: 'Shubhali foydalanuvchilar',
 						},
 						{
 							key: '/users',
@@ -84,7 +84,7 @@ const Admin: React.FC<AdminProps> = ({ children }) => {
 									<path d='M10 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM6 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM1.49 15.326a.78.78 0 0 1-.358-.442 3 3 0 0 1 4.308-3.516 6.484 6.484 0 0 0-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 0 1-2.07-.655ZM16.44 15.98a4.97 4.97 0 0 0 2.07-.654.78.78 0 0 0 .357-.442 3 3 0 0 0-4.308-3.517 6.484 6.484 0 0 1 1.907 3.96 2.32 2.32 0 0 1-.026.654ZM18 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM5.304 16.19a.844.844 0 0 1-.277-.71 5 5 0 0 1 9.947 0 .843.843 0 0 1-.277.71A6.975 6.975 0 0 1 10 18a6.974 6.974 0 0 1-4.696-1.81Z' />
 								</svg>
 							),
-							label: 'Users',
+							label: 'Foydalanuvchilar',
 						},
 						{
 							key: '/receipts',
@@ -102,7 +102,7 @@ const Admin: React.FC<AdminProps> = ({ children }) => {
 									/>
 								</svg>
 							),
-							label: 'Receipts',
+							label: 'Kvitansiyalar',
 						},
 						{
 							key: '/bonuses',
@@ -121,7 +121,7 @@ const Admin: React.FC<AdminProps> = ({ children }) => {
 									/>
 								</svg>
 							),
-							label: 'Bonuses',
+							label: 'Bonuslar',
 						},
 						{
 							key: '/branches',
@@ -139,7 +139,7 @@ const Admin: React.FC<AdminProps> = ({ children }) => {
 									/>
 								</svg>
 							),
-							label: 'Branches',
+							label: 'Filiallar',
 						},
 						{
 							key: '/messages',
@@ -154,7 +154,7 @@ const Admin: React.FC<AdminProps> = ({ children }) => {
 									<path d='m19 8.839-7.77 3.885a2.75 2.75 0 0 1-2.46 0L1 8.839V14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.839Z' />
 								</svg>
 							),
-							label: 'Messages',
+							label: 'Xabarlar',
 						},
 						localStorage.getItem('role') === 'superadmin'
 							? {
@@ -169,7 +169,7 @@ const Admin: React.FC<AdminProps> = ({ children }) => {
 											<path d='M10 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM1.615 16.428a1.224 1.224 0 0 1-.569-1.175 6.002 6.002 0 0 1 11.908 0c.058.467-.172.92-.57 1.174A9.953 9.953 0 0 1 7 18a9.953 9.953 0 0 1-5.385-1.572ZM16.25 5.75a.75.75 0 0 0-1.5 0v2h-2a.75.75 0 0 0 0 1.5h2v2a.75.75 0 0 0 1.5 0v-2h2a.75.75 0 0 0 0-1.5h-2v-2Z' />
 										</svg>
 									),
-									label: 'Admin',
+									label: 'Adminlar',
 								}
 							: null,
 					]}

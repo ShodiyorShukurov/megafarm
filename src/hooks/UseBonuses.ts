@@ -18,7 +18,7 @@ const UseBonuses = () => {
 	const [limit, setLimit] = useState(10)
 
 	const { isLoading, error, refetch } = useQuery({
-		queryKey: ['branchesData', currentPage, limit, searchUserId, receiptNo],
+		queryKey: ['bonusesData', currentPage, limit, searchUserId, receiptNo],
 		enabled: !!currentPage,
 		queryFn: async () => {
 			const res = await getBonusesData()

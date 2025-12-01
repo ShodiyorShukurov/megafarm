@@ -1,7 +1,12 @@
-import { InfoCircleOutlined } from '@ant-design/icons'
-import { Button, Table, Tag } from 'antd'
+import {
+	DeleteOutlined,
+	ExclamationCircleOutlined,
+	InfoCircleOutlined,
+} from '@ant-design/icons'
+import { Button, Popconfirm, Table, Tag } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { IBonunes } from '../../../types/interface'
+import useDeleteBonuses from '../../../hooks/UseDeleteBonuses'
 
 interface ReceiptsDataProps {
 	data: IBonunes[]
@@ -24,6 +29,14 @@ const BonunesData: React.FC<ReceiptsDataProps> = ({
 	setLimit,
 	isLoading,
 }) => {
+	const { mutate: handleDelete } = useDeleteBonuses()
+
+	const handleDeleteModal = (id: number | null) => {
+		if (id !== null) {
+			handleDelete(id)
+		}
+	}
+
 	const columns: ColumnsType<IBonunes> = [
 		{
 			title: '№',
@@ -69,13 +82,28 @@ const BonunesData: React.FC<ReceiptsDataProps> = ({
 			key: 'actions',
 			align: 'center',
 			render: (_, record) => (
-				<Button
-					type='primary'
-					icon={<InfoCircleOutlined />}
-					onClick={() => handleViewDetails(record.id)}
-				>
-					Ko'rish
-				</Button>
+				<div className='flex gap-2 justify-center'>
+					<Button
+						type='primary'
+						icon={<InfoCircleOutlined />}
+						onClick={() => handleViewDetails(record.id)}
+					>
+						Ko'rish
+					</Button>
+
+					<Popconfirm
+						title="Ushbu bonusni oʻchirmoqchimisiz?"
+						description='Ushbu amalni qaytarish mumkin emas.'
+						onConfirm={() => handleDeleteModal(record.id)}
+						onCancel={() => handleDeleteModal(null)}
+						okText='Ha'
+						cancelText="Yo'q"
+						placement='topRight'
+						icon={<ExclamationCircleOutlined className='text-red-500' />}
+					>
+						<Button type='primary' danger icon={<DeleteOutlined />} />
+					</Popconfirm>
+				</div>
 			),
 		},
 	]
